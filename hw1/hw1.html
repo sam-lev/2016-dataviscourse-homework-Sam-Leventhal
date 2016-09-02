@@ -79,15 +79,15 @@
 	  </rect>
 	</g>
   
-    <g transform="translate(0,140) ">
-    <!-- LINES LINES LINES LINES LINES  -->
-      	  <rect height="140" width="220" style="fill:steelblue; stroke:brown; stroke-width:1px">
-	  </rect>
+    <g transform="translate(0,300) scale(1,-1)">
+      <!-- LINES LINES LINES LINES LINES  -->
 
-       <path style="stroke:green; fill:white" d="M 0 0 L 20 100 L 40 80 L 60 130 L 80 90 L 100 110 L 120 140 L 140 60 L 160 40 L 180 120 L 200 70 L 220 50 " />
+	 
+	  <path style="stroke:green; fill:none" d="M 20 100 L 40 80 L 60 130 L 80 90 L 100 110 L 120 140 L 140 60 L 160 40 L 180 120 L 200 70 L 220 50 " />
+
     </g>
 
-
+    <!-- Y-coordinate line -->
     <g transform="translate(0,450) scale(1,-1)">
             	  <rect height="10" width="99.6" style="fill:green; stroke:brown; stroke-width:1px">
 		  </rect>
@@ -97,11 +97,49 @@
 		  
     </g>
     
-   </svg>
 
 
-    <!-- Area. Moving on. lines suck. -->
+    <!--------- Area. Moving on. -->
+    <g transform="translate(0,600) scale(1,-1)">
+
+      `<!-- Area for x coordinate graph -->
+
+      	  <rect height="140" width="220" style="fill:white; stroke:none">
+	  </rect>
+
+	  <path style="stroke:green; fill:steelblue" d="M 0 0 L 20 100 L 40 80 L 60 130 L 80 90 L 100 110 L 120 140 L 140 60 L 160 40 L 180 120 L 200 70 L 220 50 " />
+	  
+	  <path style="stroke:steelblue; fill:steelblue" d="M 0 0 L 220 50 L 220 0" />
+	  	  
+      	  <rect height="140" width="20" style="fill:white; stroke:none">
+	  </rect>
+
+    </g>
+
+    <!-- Y coord graph -->
+
+
+
+    <!------Scatter! Zombies! --->
+
+    <g transform="translate(10,950) scale(20,-20)">
+    <rect height="12" width="17" style="fill:white;  stroke:brown; stroke-width:.2px">
+    </rect>
+        <circle cx="10" cy="8.04" r=".1"/>
+        <circle cx="8" cy="6.95" r=".1"/>
+        <circle cx="13" cy="7.58" r=".1"/>
+        <circle cx="9" cy="8.81" r=".1"/>
+	<circle cx="11" cy="8.33" r=".1"/>
+        <circle cx="14" cy="9.96" r=".1"/>
+        <circle cx="6" cy="7.24" r=".1"/>
+        <circle cx="4" cy="4.26" r=".1"/>
+        <circle cx="12" cy="10.84" r=".1"/>
+        <circle cx="7" cy="4.82" r=".1"/>
+        <circle cx="5" cy="5.68" r=".1"/>
+    </g>
+
     
+    </svg>
     
   </body>
   
