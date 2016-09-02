@@ -12,6 +12,11 @@
       fill=blue;<!-- alignment and jazz for bars -->
       }
       
+      .lines {
+      stroke: black;
+      }
+ 
+      
     </style>
 
   </head>
@@ -92,14 +97,23 @@
             	  <rect height="10" width="99.6" style="fill:green; stroke:brown; stroke-width:1px">
 		  </rect>
 
-		    <path style="stroke:green; fill:none" d="M 20 80.4 L 40 69.5 L 60 75.8 L 80 88.1 L 100 83.3 L 120 99.6 L 140 72.4 L 160 42.6 L 180 108.4 L 200 48.2 L 220 56.8" />
-	
+		  <path style="stroke:green; fill:none" d="M 20 80.4 L 40 69.5 L 60 75.8 L 80 88.1 L 100 83.3 L 120 99.6 L 140 72.4 L 160 42.6 L 180 108.4 L 200 48.2 L 220 56.8" />
+		  <line class="lines" x1="0" y1="80.4" x2="20" y2="69.5" />
+		  <line class="lines" x1="20" y1="69.5" x2="40" y2="75.8" />
+		  <line class="lines" x1="40" y1="75.8" x2="60" y2="88.1" />
+		  <line class="lines" x1="60" y1="88.1" x2="80" y2="83.3" />
+		  <line class="lines" x1="80" y1="83.3" x2="100" y2="99.6"/>
+		  <line class="lines" x1="100" y1="99.6" x2="120" y2="72.4"/>
+		  <line class="lines" x1="120" y1="72.4" x2="140" y2="42.6"/>
+		  <line class="lines" x1="140" y1="42.6" x2="160" y2="108.4"/>
+		  <line class="lines" x1="160" y1="108.4" x2="180" y2="48.2"/>
+		  <line class="lines" x1="180" y1="48.2" x2="200" y2="56.8"/>
 		  
     </g>
     
 
 
-    <!--------- Area. Moving on. -->
+    <!--------- ..Area.. -->
     <g transform="translate(0,600) scale(1,-1)">
 
       `<!-- Area for x coordinate graph -->
