@@ -31,92 +31,109 @@
 
 
     <!-- You are now entering the bar chart zone... -->
+
+    
     <svg  width="800" height="5000" >
-      <g transform="translate(0,0)">
+      <text x="250" y="20"> Bar Charts</text>
+
+      <g transform="translate(350,0)">
 	<rect height="10" width="42.6" style="fill:green; stroke:brown; stroke-width:1px">
 	</rect>
       </g>
 
-      <g transform="translate(0,10)">
+      <g transform="translate(350,10)">
 	<rect height="10" width="56.8" style="fill:green; stroke:brown; stroke-width:1px">
 	</rect>
       </g>
 
-      <g transform="translate(0,21)">
+      <g transform="translate(350,21)">
 	<rect height="10" width="72.4" style="fill:green; stroke:brown; stroke-width:1px">
 	</rect>
       </g>
 <!-- 4-->
-      <g transform="translate(0,32)">
+      <g transform="translate(350,32)">
 	<rect height="10" width="48.2" style="fill:green; stroke:brown; stroke-width:1px">
 	</rect>
       </g>
 <!-- 5-->
-      <g transform="translate(0,43)">
+      <g transform="translate(350,43)">
 	<rect height="10" width="69.5" style="fill:green; stroke:brown; stroke-width:1px">
 	</rect>
       </g>
       <!-- 6-->
-      <g transform="translate(0,54)">
+      <g transform="translate(350,54)">
 	<rect height="10" width="88.1" style="fill:green; stroke:brown; stroke-width:1px">
 	</rect>
       </g>
-      <g transform="translate(0,65)">
+      <g transform="translate(350,65)">
 	<rect height="10" width="80.4" style="fill:green; stroke:brown; stroke-width:1px">
 	</rect>
       </g>
 
-	<g transform="translate(0,76)">
+	<g transform="translate(350,76)">
 	<rect height="10" width="83.3" style="fill:green; stroke:brown; stroke-width:1px">
 	</rect>
 	</g>
-	<g transform="translate(0,87)">
+	<g transform="translate(350,87)">
 	  <rect height="10" width="108.4" style="fill:green; stroke:brown; stroke-width:1px">
 	</rect>
 	</g>
 	
-	<g transform="translate(0,98)">
+	<g transform="translate(350,98)">
 	<rect height="10" width="75.8" style="fill:green; stroke:brown; stroke-width:1px">
 	</rect>
       </g>
-	<g transform="translate(0,109)">
+	<g transform="translate(350,109)">
 	  <rect height="10" width="99.6" style="fill:green; stroke:brown; stroke-width:1px">
 	  </rect>
 	</g>
-  
-    <g transform="translate(0,300) scale(1,-1)">
-      <!-- LINES LINES LINES LINES LINES  -->
 
-	 
+
+
+	<text x="200" y="180"> x-coordinate line</text>
+
+    <g transform="translate(350,300) scale(1,-1)">
+      <!----- LINES LINES LINES LINES LINES ------------------------ -->
+
+      <!-- X coordinate line --->
+
+
 	  <path style="stroke:green; fill:none" d="M 20 100 L 40 80 L 60 130 L 80 90 L 100 110 L 120 140 L 140 60 L 160 40 L 180 120 L 200 70 L 220 50 " />
 
     </g>
 
-    <!-- Y-coordinate line -->
-    <g transform="translate(0,450) scale(1,-1)">
-            	  <rect height="10" width="99.6" style="fill:green; stroke:brown; stroke-width:1px">
-		  </rect>
+        <text x="200" y="370"> y-coordinate line</text>
 
-		  <path style="stroke:green; fill:none" d="M 20 80.4 L 40 69.5 L 60 75.8 L 80 88.1 L 100 83.3 L 120 99.6 L 140 72.4 L 160 42.6 L 180 108.4 L 200 48.2 L 220 56.8" />
-		  <line class="lines" x1="0" y1="80.4" x2="20" y2="69.5" />
-		  <line class="lines" x1="20" y1="69.5" x2="40" y2="75.8" />
-		  <line class="lines" x1="40" y1="75.8" x2="60" y2="88.1" />
-		  <line class="lines" x1="60" y1="88.1" x2="80" y2="83.3" />
-		  <line class="lines" x1="80" y1="83.3" x2="100" y2="99.6"/>
-		  <line class="lines" x1="100" y1="99.6" x2="120" y2="72.4"/>
-		  <line class="lines" x1="120" y1="72.4" x2="140" y2="42.6"/>
-		  <line class="lines" x1="140" y1="42.6" x2="160" y2="108.4"/>
-		  <line class="lines" x1="160" y1="108.4" x2="180" y2="48.2"/>
-		  <line class="lines" x1="180" y1="48.2" x2="200" y2="56.8"/>
+    <!-- Y-coordinate line -->
+    <g transform="translate(350,450) scale(1,-1)">
+
+
+      <!-- Y coord. line as path but unseen --->
+      <path style="stroke:none; fill:none" d="M 20 80.4 L 40 69.5 L 60 75.8 L 80 88.1 L 100 83.3 L 120 99.6 L 140 72.4 L 160 42.6 L 180 108.4 L 200 48.2 L 220 56.8" />
+
+      <!-- Y coordinate line with SVG line -->
+      <line class="lines" x1="0" y1="80.4" x2="20" y2="69.5" />
+      <line class="lines" x1="20" y1="69.5" x2="40" y2="75.8" />
+      <line class="lines" x1="40" y1="75.8" x2="60" y2="88.1" />
+      <line class="lines" x1="60" y1="88.1" x2="80" y2="83.3" />
+      <line class="lines" x1="80" y1="83.3" x2="100" y2="99.6"/>
+      <line class="lines" x1="100" y1="99.6" x2="120" y2="72.4"/>
+      <line class="lines" x1="120" y1="72.4" x2="140" y2="42.6"/>
+      <line class="lines" x1="140" y1="42.6" x2="160" y2="108.4"/>
+      <line class="lines" x1="160" y1="108.4" x2="180" y2="48.2"/>
+      <line class="lines" x1="180" y1="48.2" x2="200" y2="56.8"/>
 		  
     </g>
     
 
 
-    <!--------- ..Area.. -->
-    <g transform="translate(0,600) scale(1,-1)">
+    <!--------- ..Area.. ----------------------------------------->
 
-      `<!-- Area for x coordinate graph -->
+    <text x="160" y="480"> x-coordinate line area</text>
+    
+    <g transform="translate(350,600) scale(1,-1)">
+
+      <!-- Area for x coordinate graph -->
 
       	  <rect height="140" width="220" style="fill:white; stroke:none">
 	  </rect>
@@ -130,13 +147,18 @@
 
     </g>
 
-    <!-- Y coord graph -->
-
-
-
+    <!-- Area for Y coord graph ---->
+    <text x="160" y="700"> y-coordinate line area</text>
+    
+    <g transform="translate(350,770) scale(1,-1)">
+      
+      <path style="stroke:blue; fill:bagel" d="M 20 0 L 20 80.4 L 40 69.5 L 60 75.8 L 80 88.1 L 100 83.3 L 120 99.6 L 140 72.4 L 160 42.6 L 180 108.4 L 200 48.2 L 220 56.8 L 220 0" />
+      
+    </g>
+    
     <!------Scatter! Zombies! --->
-
-    <g transform="translate(10,950) scale(20,-20)">
+    <text x="240" y="800"> scatter plot</text>
+    <g transform="translate(350,1030) scale(20,-20)">
     <rect height="12" width="17" style="fill:white;  stroke:brown; stroke-width:.2px">
     </rect>
         <circle cx="10" cy="8.04" r=".1"/>
