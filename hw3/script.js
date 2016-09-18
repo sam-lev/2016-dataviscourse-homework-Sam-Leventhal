@@ -13,12 +13,188 @@ function updateBarChart(selectedDimension) {
         xAxisWidth = 100,
         yAxisHeight = 70;
 
+    xAxesData = [];
+    yAxesData = [];
+    for (i = 0; i< allWorldCupData.length; i++){
+	xAxesData.push(allWorldCupData[i].year);
+	yAxesData.push(allWorldCupData[i][selectedDimension]);
+    }
+   
     // ******* TODO: PART I *******
 
     // Create the x and y scales; make
-    // sure to leave room for the axes
+    // sure to leave room for the axes: "Make sure to include x and y axes, with tick labels and use the proper d3 scales and axis."
+    //Attendence x:0 - 66000   y :  Matches x:  y:0 - 70  Goals x:  y:0 - 170   Teams  x:  y: 0 - 50
+    // Set up the yscales
 
-    // Create colorScale
+    
+    var xMin = d3.min(xAxesData);
+    var xMax = d3.max(xAxesData);
+
+    var yMin = d3.min(yAxesData);
+    var yMax = d3.max(yAxesData);
+
+    var height = yMax;
+    var width = xMax;
+
+    
+    var spacing = 450 / xAxesData.length;
+    
+    var svg = d3.select("#barChart");
+    svg.attr("height",400)
+	.attr("width",500)
+	.attr("transform", "translate(50,0)");
+	
+    var xScale = d3.scaleLinear()
+        .domain([1920, 2016])
+        .range([0, 480])
+	.nice();
+
+    var yScale = d3.scaleLinear()
+        .domain([d3.max(yAxesData), 0])
+        .range([0, 380])
+	.nice();
+    
+    var colorScale = d3.scaleLinear()
+            .domain([xMin, 0, xMax])
+            .range(["darkred", "lightgray", "steelblue"]);
+    
+
+
+ // Update the barchart
+    var barchart = d3.select("#barChart");
+    var bars = barchart.select("#bars");
+    var selection = bars.selectAll("rect");
+
+        
+    selection.exit().remove()
+        .attr("opacity", 1)
+        .transition()
+        .duration(3000)
+        .attr("opacity", 0)
+        .remove();
+
+    var newRect = selection
+	.data(allWorldCupData)
+	.enter()
+	.append("rect")
+	.attr("x", function (d,i) {
+            return i*spacing + 5;
+                })
+        .attr("y", function(d,i){
+	    return 380-yScale(yAxesData[i]);
+	})
+        .attr("width", 10)
+        .attr("height", function(d,i){
+	    return yScale(yAxesData[i]);
+	})
+	.attr("transform", "scale(1,1)")
+        .style("fill",  function(i,d){
+	    return colorScale(d);
+	});
+
+   
+
+    newSelection = newRect.merge(selection);
+
+    function mouseenter(d){
+	d3.select(this)
+	    .style("fill","green");
+    }
+    function mouseexit(d){
+	d3.select(this)
+	    .style("fill", function(i,d){
+		    return colorScale(d);
+	    });
+    }
+
+    function clickColor(d){
+	d3.select(this)
+	    .transition()
+	    .duration(500)
+	    .style("fill","blue")
+	    .transition()
+	    .duration(500)
+	    .style("fill", function(i,d){
+		    return colorScale(d);
+		});
+
+    }
+
+
+    
+    newSelection
+	.data(allWorldCupData)
+        .transition()
+        .duration(3000)
+	.attr("x", function (d,i) {
+            return i*spacing + 5;
+                })
+        .attr("y", function(d,i){
+	    return 380-yScale(yAxesData[i])
+	})
+        .attr("width", 10)
+        .attr("height", function(d,i){
+	    return yScale(yAxesData[i])
+	})
+    	.style("fill",function(i,d){
+	    return colorScale(d);
+	});;
+    
+    newSelection
+	.on("mouseover", mouseenter)
+        .on("mouseout", mouseexit);
+    newSelection
+	.on("click",function(d,i){
+	    d3.select(this)
+		.transition()
+		.duration(500)
+		.style("fill","blue")
+		.transition()
+		.duration(2000)
+		.style("fill",function(i,d){
+		    return colorScale(d);
+		});
+	    var tableInfo = [];
+	    tableInfo.push(d.EDITION);
+	    tableInfo.push(d.host);
+	    tableInfo.push(d.winner);
+	    tableInfo.push(d.runner_up);
+	    var teamNames = d.TEAM_NAMES.split(',');
+	    tableInfo.push(teamNames);
+	    console.log(d);//****************************
+	    //host_country_code
+	    tableInfo.push(d.host_country_code);
+	    
+	    //teams_iso (list of string country codes)
+	    console.log(d.teams_iso);
+	    tableInfo.push(d.teams_iso);
+	    //winnner country code?
+	    
+	    updateInfo(tableInfo);
+	})
+    	
+
+
+    // create a new axis that has the ticks and labels on the bottom
+    var xAxis = d3.axisBottom();
+    var yAxis = d3.axisLeft();
+	
+    // assign the scale to the axis
+    xAxis.scale(xScale);
+    yAxis.scale(yScale);
+
+    svg.select("#xAxis")
+        .transition()
+        .duration(2000)
+	.attr("transform", " translate(0,380)")
+	.call(xAxis);
+    svg.select("#yAxis")
+	.transition()
+        .duration(2000)
+	.call(yAxis);
+
+    // Create colorScale: "color each bar based on the selected data attribute (both height and color should encode the selected attribute); define and use the colorScale variable."
 
     // Create the axes (hint: use #xAxis and #yAxis)
 
@@ -44,11 +220,16 @@ function updateBarChart(selectedDimension) {
  *  There are 4 attributes that can be selected:
  *  goals, matches, attendance and teams.
  */
-function chooseData() {
+function chooseData(data) {
 
     // ******* TODO: PART I *******
     //Changed the selected data when a user selects a different
     // menu item from the drop down.
+
+    //Get value dataset from div plot-selector and pass the new bar-chart dataset selected in plot-selector to updateBarChart
+    document.getElementById("plot-selector").onchange = function (event) {
+        updateBarChart( event.target.value );
+    }
 
 }
 
@@ -64,9 +245,28 @@ function updateInfo(oneWorldCup) {
     // Update the text elements in the infoBox to reflect:
     // World Cup Title, host, winner, runner_up, and all participating teams that year
 
-    // Hint: For the list of teams, you can create an list element for each team.
-    // Hint: Select the appropriate ids to update the text content.
+    
+    d3.select("#edition").html( oneWorldCup[0] )
+    .style("color","green");
 
+    d3.select("#host").html( oneWorldCup[1] )
+    .style("color","blue");
+
+    d3.select("#winner").html(oneWorldCup[2] )
+    .style("color","blue");
+
+    d3.select("#silver").html( oneWorldCup[3] )
+    .style("color","blue");
+
+    d3.select("#teams").html("");
+    for(i=0; i < oneWorldCup[4].length; i++){
+	d3.select("#teams").append("li").html( oneWorldCup[4][i] +"\n")
+	    .style("color","blue");
+    }
+
+    //Change Map**********************************************
+    //host country code
+    updateMap(oneWorldCup);
 
 }
 
@@ -93,9 +293,41 @@ function drawMap(world) {
     // Make sure and give your paths the appropriate class (see the .css selectors at
     // the top of the provided html file)
 
+    var path = d3.geoPath()
+	.projection(projection);
 
+  
+    var map = d3.selectAll("#map");
+
+    var graticule = d3.geoGraticule(world.features);
+    
+    
+    //load world map
+    
+    map.append("path")
+	.attr("class","graticule")
+	.datum(graticule)
+	.attr("d", path);
+
+    
+    map.append("path")
+	.datum(graticule.outline)
+	.attr("class", "foreground")
+	.attr("d", path);
+
+    var countries = topojson.feature(world, world.objects.countries).features;
+
+    map.selectAll("path")
+	.data(countries)
+	.enter().append("path")
+	.attr("d", path)
+    	.attr("id", function(d,i){
+	    return d.id;
+	})
+    
+    
+    
 }
-
 /**
  * Clears the map
  */
@@ -108,7 +340,7 @@ function clearMap() {
     //Hint: If you followed our suggestion of using classes to style
     //the colors and markers for hosts/teams/winners, you can use
     //d3 selection and .classed to set these classes on and off here.
-
+    d3.selectAll("path").classed("host",false);
 }
 
 
@@ -116,10 +348,26 @@ function clearMap() {
  * Update Map with info for a specific FIFA World Cup
  * @param the data for one specific world cup
  */
-function updateMap(worldcupData) {
+function updateMap(oneWorldCup) {
 
     //Clear any previous selections;
     clearMap();
+
+    //highlight host country
+    //d3.select("#"+oneWorldCup[5]).classed("host",true);
+    //all teams
+    
+    for(i=0; i < oneWorldCup[6].length; i++){
+	var country = "#"+oneWorldCup[6][i];
+	console.log(country);
+	if(country != "#"+oneWorldCup[5]){
+	    d3.select(country)
+		.classed("team", true);
+	} else {
+	    d3.select(country)
+		.classed("host",true);
+	}
+    }
 
     // ******* TODO: PART V *******
 

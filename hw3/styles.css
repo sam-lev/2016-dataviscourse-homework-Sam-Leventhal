@@ -10,11 +10,11 @@
 }
 
 .team {
-    fill: #fee8c8;
+    fill: #33ffe8;
 }
 
 .team-html {
-    background-color: #fee8c8;
+    background-color: #33ffe8;
 }
 
 .host {
@@ -125,6 +125,21 @@ header {
     border-left-style: solid;
 }
 
+.graticule {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: .5px;
+}
+
+.graticule.outline {
+  stroke-width: 2px;
+}
+
+.foreground {
+  fill: none;
+  stroke: #333;
+  stroke-width: 1.5px;
+}
 
 #links > line {
     stroke: rgb(216, 216, 216);
@@ -134,6 +149,12 @@ header {
 #yAxis path {
     fill: none;
     stroke: black;
+}
+
+
+path {
+  fill: none;
+  stroke: #000;
 }
 
 #xAxis text,
