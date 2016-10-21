@@ -15,7 +15,7 @@ function ElectoralVoteChart(){
  */
 ElectoralVoteChart.prototype.init = function(){
     var self = this;
-    self.margin = {top: 30, right: 20, bottom: 30, left: 50};
+    self.margin = {top: 30, right: 20, bottom: 30, left: 60};
 
     //Gets access to the div element created for this chart from HTML
     var divelectoralVotes = d3.select("#electoral-vote").classed("content", true);
@@ -57,15 +57,139 @@ ElectoralVoteChart.prototype.chooseClass = function (party) {
 ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
     var self = this;
 
+
     // ******* TODO: PART II *******
 
     //Group the states based on the winning party for the state;
     //then sort them based on the margin of victory
+    var winner;
+    var evSum = 0;
+    var indpEVSum = 0;
+    var repEVSum = 0;
+    var demEVSum = 0;
+    
+    var indp = electionResult.filter(function (d){
+	evSum = evSum + parseInt(d.Total_EV);
+	indpEVSum = indpEVSum + parseInt(d.I_EV_Total);
+	winner = d['Winning Party'];
+	return d['State_Winner'] == "I" ;
+    });
+    indp = indp.sort(function(a,b) {
+	return d3.descending(b.RD_Difference, a.RD_Difference)
+    });
+    
+    // Republican data sorted
+    var rep = electionResult.filter(function (d){
+	repEVSum = repEVSum + parseInt(d.R_EV_Total);
+	return d['State_Winner'] == "R";
+    });
+    rep = rep.sort(function(a, b) {
+	return d3.ascending(Math.abs(a.RD_Difference) , Math.abs(b.RD_Difference) )
+    });
 
+    var dem = electionResult.filter(function (d){
+	demEVSum = demEVSum + parseInt(d.D_EV_Total);
+	return d['State_Winner'] == "D";
+    });
+    dem = dem.sort(function(a,b){
+	return d3.descending(Math.abs(a.RD_Difference), Math.abs(b.RD_Difference))
+    });
+
+  
+    var barScale = d3.scaleLinear()
+	.domain([0, evSum])
+	.range([0, self.svgWidth]);
+
+    var allData = indp.concat(dem, rep);
+  /*  pr('dem');
+    pr(dem);
+    pr("ind");
+    pr(indp);
+    pr("rep");
+    pr(rep);
+    pr(allData.length);
+    pr(allData);
+  */
     //Create the stacked bar chart.
     //Use the global color scale to color code the rectangles.
     //HINT: Use .electoralVotes class to style your bars.
+    var  divelectoralVotes = d3.select("#electoral-vote");
+    var svg = divelectoralVotes.select("svg");
+    var bars = svg.selectAll("rect")
+	.data(allData);
 
+    bars.exit().remove();
+    
+    var barEnter = bars.enter()
+	.append("g")
+	.attr("height", self.svgHeight)
+	.attr("width", self.svgWidth);
+    
+    bars.exit().remove();
+    
+    
+    var xShift = 0;
+    barEnter.append("rect")
+	.attr("width", function(d, i){
+	    return barScale(parseInt(d.Total_EV)) 
+	})
+	.attr("height", 20)
+	.attr("x", function(d, i){
+	    var xBar = xShift;
+	    xShift = xShift + parseFloat(d.Total_EV);
+	    return barScale(xBar + 10);
+	})
+    	.attr("y", 2.3)
+	.attr("fill", function(d, i){
+	    if(d.State_Winner == "D")
+	    { return colorScale(d.RD_Difference) }
+	    else if(d.State_Winner == "R"){ return colorScale(d.RD_Difference) }
+	    else if(d.State_Winner == "I"){ return "green" }
+	    else{ return "green" };
+	}); 
+
+    barEnter.append("rect")
+	.attr("width", 1)
+	.attr("height", 35)
+	.attr("x", evSum/2)
+	.attr("y", -12)
+	.attr("fill", "black");
+
+    barEnter.append("text")
+    	.attr("dx", evSum/2-5)
+	.attr("dy", 10)
+	.text(function(d){
+	    return "Electoral Vote ("+evSum/2+" needed to win)"
+	})
+	.attr("font-size","11px");
+
+    barEnter.append("text")
+    	.attr("dx", 0)
+	.attr("dy", 10)
+	.text(function(d){return d.I_EV_Total})
+	.attr("font-size","11px")
+	.attr("stroke", "green"); 
+
+    barEnter.append("text")
+    	.attr("dx", function(d){ return parseInt(d.I_EV_Total)})
+	.attr("dy", 10)
+	.text(function(d){ return d.D_EV_Total})
+	.attr("font-size","11px")
+	.attr("stroke", function(d){ return colorScale(-1*d.RD_Difference)});
+	     
+    barEnter.append("text")
+    	.attr("dx", function(d){  return evSum-10})
+	.attr("dy", 10)
+	.text(function(d){ return d.R_EV_Total})
+	.attr("font-size","12px")
+	.attr("stroke", function(d){ return colorScale(d.RD_Difference)});
+    
+    bars = bars.merge(barEnter);
+
+    bars.attr("transform", function(d,i){
+	return "translate(30, 0)"
+    });
+    
     //Display total count of electoral votes won by the Democrat and Republican party
     //on top of the corresponding groups of bars.
     //HINT: Use the .electoralVoteText class to style your text elements;  Use this in combination with

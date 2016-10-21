@@ -1,7 +1,9 @@
 // Global var for FIFA world cup data
 var allWorldCupData;
-
-
+/*
+convertCountryCode = (code) => {
+	return isoCountries[code].name;
+};*/
 /**
  * Render and update the bar chart based on the selection of the data type in the drop-down box
  *
@@ -108,17 +110,12 @@ function updateBarChart(selectedDimension) {
 	    });
     }
 
-    function clickColor(d){
-	d3.select(this)
-	    .transition()
-	    .duration(500)
-	    .style("fill","blue")
-	    .transition()
-	    .duration(500)
-	    .style("fill", function(i,d){
-		    return colorScale(d);
-		});
+    function colorReset(d){
+	d3.selected(this).classed("selected",false);
 
+    }
+    function selected(d){
+	d3.select(this).classed("selected",true);
     }
 
 
@@ -139,22 +136,27 @@ function updateBarChart(selectedDimension) {
 	})
     	.style("fill",function(i,d){
 	    return colorScale(d);
-	});;
+	});
     
     newSelection
 	.on("mouseover", mouseenter)
         .on("mouseout", mouseexit);
     newSelection
 	.on("click",function(d,i){
-	    d3.select(this)
-		.transition()
-		.duration(500)
-		.style("fill","blue")
-		.transition()
-		.duration(2000)
-		.style("fill",function(i,d){
-		    return colorScale(d);
-		});
+	    //HANDLE COLORING
+	    d3.select(".selected").classed("selected", false)
+	    .transition()
+	    .duration(10)
+	    d3.select(this).style("fill", "blue")
+	    .transition()
+	    .duration(2000)
+	    d3.select(this).style("fill",function(i,d){
+	    return colorScale(d);
+	    })
+	    //d3.select(this).classed("selected",true)
+    
+
+	    //Gather Attributes
 	    var tableInfo = [];
 	    tableInfo.push(d.EDITION);
 	    tableInfo.push(d.host);
@@ -162,18 +164,29 @@ function updateBarChart(selectedDimension) {
 	    tableInfo.push(d.runner_up);
 	    var teamNames = d.TEAM_NAMES.split(',');
 	    tableInfo.push(teamNames);
-	    console.log(d);//****************************
+	   
 	    //host_country_code
 	    tableInfo.push(d.host_country_code);
 	    
 	    //teams_iso (list of string country codes)
-	    console.log(d.teams_iso);
+	  
 	    tableInfo.push(d.teams_iso);
-	    //winnner country code?
+
+	    //long lat winner
+	    var winCoord = []
+	    winCoord.push(parseFloat(d.WIN_LON));
+	    winCoord.push(parseFloat(d.WIN_LAT));
+
+	    var silverCoord = []
+	    silverCoord.push(parseFloat(d.RUP_LON));
+	    silverCoord.push(parseFloat(d.RUP_LAT));
+	    
+	    tableInfo.push(winCoord); // winner coord as two string
+	                              // indes
+	    tableInfo.push(silverCoord);
 	    
 	    updateInfo(tableInfo);
 	})
-    	
 
 
     // create a new axis that has the ticks and labels on the bottom
@@ -341,7 +354,10 @@ function clearMap() {
     //the colors and markers for hosts/teams/winners, you can use
     //d3 selection and .classed to set these classes on and off here.
     d3.selectAll("path").classed("host",false);
+    d3.selectAll("path").classed("team",false);
+    //d3.selectAll("circle").classed("gold",false);
 }
+
 
 
 /**
@@ -356,10 +372,9 @@ function updateMap(oneWorldCup) {
     //highlight host country
     //d3.select("#"+oneWorldCup[5]).classed("host",true);
     //all teams
-    
+
     for(i=0; i < oneWorldCup[6].length; i++){
 	var country = "#"+oneWorldCup[6][i];
-	console.log(country);
 	if(country != "#"+oneWorldCup[5]){
 	    d3.select(country)
 		.classed("team", true);
@@ -369,8 +384,81 @@ function updateMap(oneWorldCup) {
 	}
     }
 
-    // ******* TODO: PART V *******
+   
+    var pointClass =  d3.select("#points");
+    var points = pointClass.selectAll("circle");
 
+            
+    points.remove()
+    
+    var newPoint = points
+	.data(oneWorldCup[7])
+	.enter()
+	.append("circle")
+	.attr("cx", function(d) {
+	    return projection(oneWorldCup[7])[0];
+	})
+	.attr("cy", function(d){
+	    return projection(oneWorldCup[7])[1];
+	})//  function(d) { projection(d)[0] })//
+	.attr("r", 5)
+	.classed("gold",true);
+
+    newestPoint = newPoint.merge(points);
+
+    newestPoint
+	.data(oneWorldCup[7])
+	.enter()
+	.append("circle")
+	.attr("cx", function(d) {
+	    return projection(oneWorldCup[7])[0];
+	})
+	.attr("cy", function(d){
+	    console.log(d);
+	    return projection(oneWorldCup[7])[1];
+	})//  function(d) { projection(d)[0] })//
+	.attr("r", 5)
+	.classed("gold",true);
+    
+    newestPoint = newPoint.merge(points);
+
+
+    
+    var newPoint = points
+	.data(oneWorldCup[8])
+	.enter()
+	.append("circle")
+	.attr("cx", function(d) {
+	    return projection(oneWorldCup[8])[0];
+	})
+	.attr("cy", function(d){
+	    return projection(oneWorldCup[8])[1];
+	})//  function(d) { projection(d)[0] })//
+	.attr("r", 5)
+	.classed("silver",true);
+
+    newestPoint = newPoint.merge(points);
+
+    newestPoint
+	.data(oneWorldCup[8])
+	.enter()
+	.append("circle")
+	.attr("cx", function(d) {
+	    return projection(oneWorldCup[8])[0];
+	})
+	.attr("cy", function(d){
+	    console.log(d);
+	    return projection(oneWorldCup[8])[1];
+	})//  function(d) { projection(d)[0] })//
+	.attr("r", 5)
+	.classed("silver",true);
+    
+    newestPoint = newPoint.merge(points);
+
+    // ******* TODO: PART V *******
+//convertCountryCode = (code) => {
+  //  return isoCountries[code].name;
+//}
     // Add a marker for the winner and runner up to the map.
 
     //Hint: remember we have a conveniently labeled class called .winner
@@ -427,3 +515,4 @@ d3.csv("data/fifa-world-cup.csv", function (error, csv) {
     // Draw the Bar chart for the first time
     updateBarChart('attendance');
 });
+

@@ -68,6 +68,7 @@ VotePercentageChart.prototype.tooltip_render = function (tooltip_data) {
 VotePercentageChart.prototype.update = function(electionResult){
     var self = this;
 
+    pr(electionResult[0].D_Nominee_prop);
     //for reference:https://github.com/Caged/d3-tip
     //Use this tool tip element to handle any hover over the chart
     tip = d3.tip().attr('class', 'd3-tip')
@@ -76,18 +77,19 @@ VotePercentageChart.prototype.update = function(electionResult){
             return [0,0];
         })
         .html(function(d) {
-            /* populate data in the following format
-             * tooltip_data = {
-             * "result":[
-             * {"nominee": D_Nominee_prop,"votecount": D_Votes_Total,"percentage": D_PopularPercentage,"party":"D"} ,
-             * {"nominee": R_Nominee_prop,"votecount": R_Votes_Total,"percentage": R_PopularPercentage,"party":"R"} ,
-             * {"nominee": I_Nominee_prop,"votecount": I_Votes_Total,"percentage": I_PopularPercentage,"party":"I"}
-             * ]
-             * }
-             * pass this as an argument to the tooltip_render function then,
-             * return the HTML content returned from that method.
-             * */
-            return ;
+            // populate data in the following format
+              tooltip_data = {
+              "result":[
+		  {"nominee": electionResult[0].D_Nominee_prop,"votecount": parseFloat(electionResult[0].D_Votes_Total),"percentage": parseFloat(electionResult[0].D_PopularPercentage),"party":"D"} ,
+		  {"nominee": electionResult[0].R_Nominee_prop,"votecount": parseFloat(electionResult[0].R_Votes_Total),"percentage": parseFloat(electionResult[0].R_PopularPercentage),"party":"R"} ,
+		  {"nominee": electionResult[0].I_Nominee_prop,"votecount": parseFloat(electionResult[0].I_Votes_Total),"percentage": parseFloat(electionResult[0].I_PopularPercentage),"party":"I"}
+              ]
+              }
+              //pass this as an argument to the tooltip_render function then,
+             // return the HTML content returned from that method.
+              
+	    var htmlRender  = self.tooltip_render(tooltip_data)
+            return htmlRender ;
         });
 
 
@@ -96,7 +98,51 @@ VotePercentageChart.prototype.update = function(electionResult){
     //Create the stacked bar chart.
     //Use the global color scale to color code the rectangles.
     //HINT: Use .votesPercentage class to style your bars.
+    var barScale = d3.scaleLinear()
+	.domain([0, parseFloat(electionResult[0].D_PopularPercentage)+ parseFloat(electionResult[0].R_PopularPercentage) + parseFloat(electionResult[0].I_PopularPercentage)])
+	.range([0, self.svgWidth]);
+    
+    var divvotesPercentage = d3.select("#votes-percentage");
+    var svg = divvotesPercentage.select("svg");
+    var bars = svg.selectAll("rect")
+	.data([{"party": "I", "percent":parseFloat(electionResult[0].I_PopularPercentage)},{"party":"D", "percent": parseFloat(electionResult[0].D_PopularPercentage)},{"party":"R","percent": parseFloat(electionResult[0].R_PopularPercentage)}]);
 
+    bars.exit().remove();
+
+    var barEnter = bars.enter()
+	.append("g");
+
+    svg.call(tip);
+    
+    var xShift = 0;
+    barEnter.append("rect")
+	.attr("width", function(d){ return barScale( d.percent) })
+	.attr("height", 20)
+	.attr("x", function(d) { var xBar = xShift; xShift = xShift + d.percent; return barScale( xBar )})
+	.attr("y",3)
+    	.attr("class", function(d, i){
+	    if(d.party == "D")
+	    { return "democrat"}
+	    else if(d.party== "R")
+	    { return "republican" }
+	    else if(d.party == "I")
+	    { return "independent" }
+	    else{ return "green" };
+	})
+    	.on("mouseenter", tip.show)
+	.on("mouseout", tip.hide);
+
+    bars = bars.merge(barEnter);
+
+    bars.attr("transform", function(d,i){
+	return "translate(30, 0)"
+    });
+
+   
+
+
+    
+    
     //Display the total percentage of votes won by each party
     //on top of the corresponding groups of bars.
     //HINT: Use the .votesPercentageText class to style your text elements;  Use this in combination with
