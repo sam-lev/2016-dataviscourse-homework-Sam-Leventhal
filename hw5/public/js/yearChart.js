@@ -88,12 +88,12 @@ YearChart.prototype.update = function(){
     var dataUsed = self.electionWinners;
 
     
-    var svg = d3.select("svg");
+    var svg = d3.select("#year-chart").selectAll("svg");
     var circles = svg.selectAll("circle");
     var data = circles.data(self.electionWinners);
 
     data.exit().remove();
-
+    
     //add number of data elements g containers at desired x and y coordinates
     var data = data.enter()
 	.append("g")

@@ -118,14 +118,18 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
     var bars = svg.selectAll("rect")
 	.data(allData);
 
-    bars.exit().remove();
+    d3.selectAll("rect").remove();
+    d3.selectAll("rect").enter()
+	.append("g")
+	.attr("height", self.svgHeight)
+	.attr("width", self.svgWidth);
     
     var barEnter = bars.enter()
 	.append("g")
 	.attr("height", self.svgHeight)
 	.attr("width", self.svgWidth);
     
-    bars.exit().remove();
+
     
     
     var xShift = 0;
@@ -185,7 +189,8 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
 	.attr("stroke", function(d){ return colorScale(d.RD_Difference)});
     
     bars = bars.merge(barEnter);
-
+    d3.selectAll("rect").merge(barEnter);
+    
     bars.attr("transform", function(d,i){
 	return "translate(30, 0)"
     });

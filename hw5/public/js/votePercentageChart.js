@@ -56,10 +56,18 @@ VotePercentageChart.prototype.tooltip_render = function (tooltip_data) {
     tooltip_data.result.forEach(function(row){
         text += "<li class = " + self.chooseClass(row.party)+ ">" + row.nominee+":\t\t"+row.votecount+"("+row.percentage+"%)" + "</li>"
     });
-
     return text;
 }
 
+VotePercentageChart.prototype.handleNaN = function(value){
+    var result;
+    if(value){
+	result = value;
+    }else{
+	result = 0;
+    }
+    return result
+}
 /**
  * Creates the stacked bar chart, text content and tool tips for Vote Percentage chart
  *
@@ -80,15 +88,15 @@ VotePercentageChart.prototype.update = function(electionResult){
             // populate data in the following format
               tooltip_data = {
               "result":[
-		  {"nominee": electionResult[0].D_Nominee_prop,"votecount": parseFloat(electionResult[0].D_Votes_Total),"percentage": parseFloat(electionResult[0].D_PopularPercentage),"party":"D"} ,
-		  {"nominee": electionResult[0].R_Nominee_prop,"votecount": parseFloat(electionResult[0].R_Votes_Total),"percentage": parseFloat(electionResult[0].R_PopularPercentage),"party":"R"} ,
-		  {"nominee": electionResult[0].I_Nominee_prop,"votecount": parseFloat(electionResult[0].I_Votes_Total),"percentage": parseFloat(electionResult[0].I_PopularPercentage),"party":"I"}
+		  {"nominee": electionResult[0].D_Nominee_prop,"votecount": parseFloat(electionResult[0].D_Votes_Total),"percentage": parseFloat(self.handleNaN(electionResult[0].D_PopularPercentage)),"party":"D"} ,
+		  {"nominee": electionResult[0].R_Nominee_prop,"votecount": parseFloat(electionResult[0].R_Votes_Total),"percentage": parseFloat(self.handleNaN(electionResult[0].R_PopularPercentage)),"party":"R"} ,
+		  {"nominee": electionResult[0].I_Nominee_prop,"votecount": parseFloat(electionResult[0].I_Votes_Total),"percentage": parseFloat(self.handleNaN(electionResult[0].I_PopularPercentage)),"party":"I"}
               ]
               }
               //pass this as an argument to the tooltip_render function then,
              // return the HTML content returned from that method.
               
-	    var htmlRender  = self.tooltip_render(tooltip_data)
+	    var htmlRender  = self.tooltip_render(tooltip_data);
             return htmlRender ;
         });
 
@@ -99,7 +107,7 @@ VotePercentageChart.prototype.update = function(electionResult){
     //Use the global color scale to color code the rectangles.
     //HINT: Use .votesPercentage class to style your bars.
     var barScale = d3.scaleLinear()
-	.domain([0, parseFloat(electionResult[0].D_PopularPercentage)+ parseFloat(electionResult[0].R_PopularPercentage) + parseFloat(electionResult[0].I_PopularPercentage)])
+	.domain([0, parseFloat(self.handleNaN(electionResult[0].D_PopularPercentage))+ parseFloat(self.handleNaN(electionResult[0].R_PopularPercentage)) + parseFloat(self.handleNaN(electionResult[0].I_PopularPercentage))])
 	.range([0, self.svgWidth]);
     
     var divvotesPercentage = d3.select("#votes-percentage");
