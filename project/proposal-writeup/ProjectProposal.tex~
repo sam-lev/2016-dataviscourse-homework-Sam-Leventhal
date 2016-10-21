@@ -137,11 +137,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Basic Info}{. The project title, your names, e-mail addresses, UIDs, a link to the project repository.}
-Project Title: An Intuitive Look on College Comparisons\\
-Authors: Samuel Leventhal \& Unnikrishnan Rajagopalan\\
-e-mail Addresses: Samuel ( samlev@cs.utah.edu ) Unnikrishnan (unniar@cs.utah.edu)\\
-UIDs: Samuel (u0491567) Unnikrishnan (u1010114)\\
-Repository: 
 
 \section{Background and Motivation}{. Discuss your motivations and reasons for choosing this project, especially any background or research interests that may have influenced your decision.}
 The project proposed is the resulted from $(a)$ an interest in designing an approachable and informative means for researching potential colleges when applying and $(b)$ investigate the relation between the academic progress in a field and the funding provided to that department.
