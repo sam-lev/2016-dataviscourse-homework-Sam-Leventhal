@@ -22,6 +22,7 @@
     "xspace"
     "color"
     "url"
+    "hyperref"
     "mathtools"
     "tikz")
    (TeX-add-symbols
