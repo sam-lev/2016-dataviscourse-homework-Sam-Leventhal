@@ -20,8 +20,8 @@ ShiftChart.prototype.init = function(){
  *
  * @param selectedStates data corresponding to the states selected on brush
  */
-ShiftChart.prototype.update = function(selectedStates, flag){
-/*
+ShiftChart.prototype.update = function(selectedStates, flag) {
+
     var self = this;
     d3.selectAll('ul').remove();
     var ul = d3.select("#stateList").append('ul');
@@ -42,7 +42,7 @@ ShiftChart.prototype.update = function(selectedStates, flag){
             });
     }
 
-   if (flag == 1) {
+    if (flag == 1) {
         ul.selectAll("li")
             .data(selectedStates)
             .append("li")
@@ -57,5 +57,7 @@ ShiftChart.prototype.update = function(selectedStates, flag){
             .text(function (d, i) {
                 return d[0].YEAR;
             });
-*/
-};
+
+    }
+    ;
+}

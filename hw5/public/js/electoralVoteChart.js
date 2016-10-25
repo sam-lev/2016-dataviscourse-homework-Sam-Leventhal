@@ -141,7 +141,7 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
 	    xShift = xShift + parseFloat(d.Total_EV);
 	    return barScale(xBar + 10);
 	})
-    	.attr("y", 2.3)
+    	.attr("y", 30)
 	.attr("fill", function(d, i){
 	    if(d.State_Winner == "D")
 	    { return colorScale(d.RD_Difference) }
@@ -154,12 +154,12 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
 	.attr("width", 1)
 	.attr("height", 20)
 	.attr("x", evSum/2)
-	.attr("y", 2)
+	.attr("y", 30)
 	.attr("fill", "black");
 
     barEnter.append("text")
     	.attr("dx", evSum/4+10)
-	.attr("dy", 10)
+	.attr("dy", 30)
 	.text(function(d){
 	    return "Electoral Vote ("+evSum/2+" needed to win)"
 	})
@@ -167,14 +167,14 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
 
     barEnter.append("text")
     	.attr("dx", 0)
-	.attr("dy", 10)
+	.attr("dy", 35)
 	.text(function(d){return d.I_EV_Total})
 	.attr("font-size","15px")
 	.attr("stroke", "green"); 
 
     barEnter.append("text")
     	.attr("dx", function(d){ return barScale( parseInt(d.I_EV_Total))})
-	.attr("dy", 10)
+	.attr("dy", 20)
 	.text(function(d){ return d.D_EV_Total})
 	.attr("font-size","15px")
 	.attr("stroke", function(d){ return colorScale(-1*d.RD_Difference)});

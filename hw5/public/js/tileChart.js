@@ -21,8 +21,8 @@ TileChart.prototype.init = function(){
     self.margin = {top: 30, right: 20, bottom: 30, left: 50};
 
     var svgBounds = divTileChart.node().getBoundingClientRect();
-    self.svgWidth = svgBounds.width - self.margin.left - self.margin.right;
-    self.svgHeight = self.svgWidth/2;
+    self.svgWidth = svgBounds.width - self.margin.left - self.margin.right+300;
+    self.svgHeight = (self.svgWidth+300)/2;
     var legendHeight = 150;
 
     //creates svg elements within the div
@@ -32,8 +32,8 @@ TileChart.prototype.init = function(){
         .attr("transform", "translate(" + self.margin.left + ",0)")
 
     self.svg = divTileChart.append("svg")
-                        .attr("width",self.svgWidth)
-                        .attr("height",self.svgHeight)
+                        .attr("width",self.svgWidth + 50)
+                        .attr("height",self.svgHeight+300)
                         .attr("transform", "translate(" + self.margin.left + ",0)")
                         .style("bgcolor","green")
 
@@ -67,13 +67,13 @@ TileChart.prototype.tooltip_render = function (tooltip_data) {
     var self = this;
     var text = "<h2 class ="  + self.chooseClass(tooltip_data.winner) + " >" + tooltip_data.state + "</h2>";
     text +=  "Electoral Votes: " + tooltip_data.electoralVotes;
-    text += "<ul>"
+    text += "<ul>";
     tooltip_data.result.forEach(function(row){
-        text += "<li class = " + self.chooseClass(row.party)+ ">" + row.nominee+":\t\t"+row.votecount+"("+row.percentage+"%)" + "</li>"
+        text += "<li class = " + self.chooseClass(row.party)+ ">" + row.nominee+':\t\t'+row.votecount+'('+row.percentage+"%)" + "</li>"
     });
     text += "</ul>";
     return text;
-}
+};
 /**
  * Helper function to detrmine state from 12*8 length array
  */
@@ -125,21 +125,21 @@ TileChart.prototype.update = function(electionResult, colorScale){
             return [0,0];
         })
         .html(function(d) {
-           // populate data in the following format
+            // populate data in the following format
             tooltip_data = {
-		"state": State,
-		"winner":d.State_Winner,
-		"electoralVotes" : Total_EV,
-		"result":[
-		    {"nominee": D_Nominee_prop,"votecount": D_Votes,"percentage": D_Percentage,"party":"D"} ,
-		    {"nominee": R_Nominee_prop,"votecount": R_Votes,"percentage": R_Percentage,"party":"R"} ,
-		    {"nominee": I_Nominee_prop,"votecount": I_Votes,"percentage": I_Percentage,"party":"I"}
-		]
-            }
-              //pass this as an argument to the tooltip_render function then,
-              //return the HTML content returned from that method.
-            var tooltip = self.tooltip_render(tooltip_data);
-            return tooltip;
+                "state": State,
+                "winner": d.State_Winner,
+                "electoralVotes": Total_EV,
+                "result": [
+                    {"nominee": D_Nominee_prop, "votecount": D_Votes, "percentage": D_Percentage, "party": "D"},
+                    {"nominee": R_Nominee_prop, "votecount": R_Votes, "percentage": R_Percentage, "party": "R"},
+                    {"nominee": I_Nominee_prop, "votecount": I_Votes, "percentage": I_Percentage, "party": "I"}
+                ]
+            };
+            //pass this as an argument to the tooltip_render function then,
+            //return the HTML content returned from that method.
+            return self.tooltip_render(tooltip_data);
+
         });
     
 
@@ -225,10 +225,10 @@ TileChart.prototype.update = function(electionResult, colorScale){
             return xScale(parseInt(d.Space));
         })
         .attr("y",function (d,i) {
-            return yScale(parseInt(d.Row))-15;
+            return yScale(parseInt(d.Row));
         })
-        .attr("width",(self.svgWidth)/12)
-        .attr("height",(self.svgHeight-20)/8)
+        .attr("width",(self.svgWidth)/12 )
+        .attr("height",(self.svgHeight)/8 )
         .attr("fill", function (d,i) {
             if(d.State_Winner == "I"){
                 return "green"
@@ -241,13 +241,14 @@ TileChart.prototype.update = function(electionResult, colorScale){
         .on("mouseover",tip.show)
         .on("mouseout",tip.hide);	       
 
+    pr(tip);
     
     tileEnter.append("text")
         .attr("x", function (d,i) {
             return  xScale(parseInt(d.Space));
         })
         .attr("y", function (d,i) {
-            return  xScale(parseInt(d.Row));
+            return  xScale(parseInt(d.Row))+10;
         })
         .text(function (d) {
             return d.Abbreviation;
@@ -259,7 +260,7 @@ TileChart.prototype.update = function(electionResult, colorScale){
             return  xScale(parseInt(d.Space));
         })
         .attr("y", function (d,i) {
-            return  xScale(parseInt(d.Row))+14;
+            return  xScale(parseInt(d.Row))+24;
         })
         .text(function (d) {
             return d.Total_EV;

@@ -189,7 +189,7 @@ YearChart.prototype.update = function(){
     //Implement a call back method to handle the brush end event.
     //Call the update method of shiftChart and pass the data corresponding to brush selection.
     //HINT: Use the .brush class to style the brush.
-    var brush = d3.brushX().extent([[0,50],[self.svgWidth,80]]).on("end", function() {
+    var brush = d3.brushX().extent([[0,70],[self.svgWidth,80]]).on("end", function() {
         var brushSelection = d3.event.selection;
               pr(brushSelection);
         console.log(brushSelection[0],brushSelection[1]);
