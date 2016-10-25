@@ -858,11 +858,7 @@ Package pdftex.def Info: pointgraph.png used on input line 219.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-
-Underfull \vbox (badness 1867) has occurred while \output is active []
-
- [3]
-[4]
+[3] [4]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 240.
  [5 <./visualizationSketch.png>] [6 <./barchart.png> <./attributegauge.png>] [7
  <./pointgraph.png>]
@@ -881,11 +877,11 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 240.
 Here is how much of TeX's memory you used:
  19324 strings out of 494953
  379402 string characters out of 6180978
- 474136 words of memory out of 5000000
+ 474132 words of memory out of 5000000
  22232 multiletter control sequences out of 15000+600000
  11045 words of font info for 42 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 55i,7n,67p,1380b,348s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 55i,7n,67p,1380b,388s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texl
@@ -893,7 +889,7 @@ ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/tex
 mf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist
 /fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/
 type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on ProjectProposal.pdf (7 pages, 19109080 bytes).
+Output written on ProjectProposal.pdf (7 pages, 19109033 bytes).
 PDF statistics:
  121 PDF objects out of 1000 (max. 8388607)
  99 compressed objects within 1 object stream
