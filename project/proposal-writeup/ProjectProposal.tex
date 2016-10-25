@@ -54,10 +54,10 @@
 \renewcommand{\labelenumi}{(\alph{enumi}) }
 
 
-\title{Project Proposal
+\title{Know your Schools - "Intuitive way to visualize University data statistics"
 }
-\author{Anonymous Author(s)}
-\date{}
+\author{Sameuel Levanthal and Unnikrishnan Rajagopalan}
+\date{date}
 
 \begin{document}
 
@@ -147,14 +147,14 @@ UIDs: Samuel (u0491567) Unnikrishnan (u1010114)\\
 Repository: \href{https://github.com/sam-lev/2016-dataviscourse-homework-Sam-Leventhal/tree/master/project}{https://github.com/sam-lev/2016-dataviscourse-homework-Sam-Leventhal/tree/master/project}
 
 \section{Background and Motivation}.\textbf{ Discuss your motivations and reasons for choosing this project, especially any background or research interests that may have influenced your decision.}\\
-The project proposed results from $(a)$ an interest in designing an approachable and informative means for researching potential colleges when applying for undergraduate or graduate schools and $(b)$ to develop a measure and means of comparison between schools and departments based on ``academic progress'' and other measures of achievement such as success in sports. If time permits it may also prove interesting to show the relationship between academic progress and funding. 
+The project proposed results from $(a)$ an interest in designing an approachable and informative means for scouring potential colleges when applying for undergraduate or graduate schools and $(b)$ to develop a measure and means of comparison between schools and departments based on ``academic progress'' and other measures of achievements such as success in sports etc. 
 
 \section{Project Objectives}\textbf{ Provide the primary questions you are trying to answer with your visualization. What would you like to learn and accomplish? List the benefits.}
-The backbone of the project is a visualization which allows the user to easily understand and compare numerous college statistics such as tuition cost, ranking, average salary after graduation and so on. Among others a college attribute of interest will be the number of publications produced for each school department within a year. Using rate of publications as a measure will allow the user to compare schools based on academic progress as well as see the change in academic progress between departments within a school over time. Secondary to this if the data is available we hope to incorporate school funding per department. We believe it will be informative to visualize the relation between funding and rate of publications. It would also be interesting the source of that funding, be it private or government.
+The backbone of the project is a visualization which allows the user to easily understand and compare numerous college statistics such as tuition cost, ranking, average salary after graduation and so on. Among others a specific college attribute of interest would be for example the number of publications produced for each school department within a year. Using rate of publications as a measure will allow the user to compare schools based on academic progress as well as see the change in academic progress between departments within a school over time. Secondary to this if the data is available we hope to incorporate other important school attributes like funding which would be essential factor for choosing a school.
 
 In terms of utility the visualization will allow for an intuitive alternative to the what is now a tedious and difficult process of determining which schools are a best fit for a student moving into higher education. Much of the web crawling now required during the school selection process will be well contained in an approachable and information rich visualization in that users are able to display similar schools based on their criteria as well as compare specific schools by selection or school attributes of interest.
 
-A second result of interest will be the ability to gauge the academic progress, tuition fees, acceptance rate, ect... of a school or schools over time. In this the development and future direction of school departments will be better estimated by the user. 
+A second result of interest will be the ability to gauge the academic progress, tuition fees, acceptance rate, etc... of a school or schools over time. In this the development and future direction of school departments will be better estimated by the user. 
 
 \section{Data}\textbf{ From where and how are you collecting your data? If appropriate, provide a link to your data sources.}
 
@@ -169,7 +169,8 @@ A second result of interest will be the ability to gauge the academic progress, 
 \item Acceptance rate
 \item Average GPA, SAT, GRE, ACT, MCAT, ect for accepted students
 \end{itemize}
-\item Funding Attributes 
+\item Funding Attributes
+\item Admissions during Fall,Spring,Summer
 \begin{itemize}
 \item Funding per department.
 \item Source of funding.
@@ -198,9 +199,16 @@ A second result of interest will be the ability to gauge the academic progress, 
   Necessary visualizations and features include a map projection, hoverable and clickable points on the map for schools, legend with school statistics, click feature for each school statistic in the legend which opens a range selector in which one drags to points along a legend to represent what range to be considered, the option to select specific schools to compare, the option to compare a preset number of similar schools which fall into the user defined features of interest and their ranges, histograms for each selected school displaying it's specific attributes, a more detailed set of all features for each school consisting of oval bars representing an attribute's range and circles for the value of each selected school.
 
 \section{Optional Features}\textbf{ List the features which you consider to be nice to have, but not critical.}
+The feature which we feel nice to have would be to provide a visualization similar to GapMinder by Hans Rosling which was discussed in the class. Using this type of visualization we would be able to show the change in the school's performance over time.
+The attributes we would consider are academic progress in terms of patents, publications, sports, endowment etc.
 
 
 \section{Project Schedule}{. Make sure that you plan your work so that you can avoid a big rush right before the final project deadline, and delegate different modules and responsibilities among your team members. Write this in terms of weekly deadlines.}
+Week 1 after proposal - Mine data from the sources
+Week 2 - Map projections with Universities plotted
+Week 3 -  Attribute selection Legend and selection comparison
+Week 4 - Guage visualizations for selected universities
+Week 5 - Work on GapMinder type visualization
 
 \end{document}
 %%% Local Variables:
