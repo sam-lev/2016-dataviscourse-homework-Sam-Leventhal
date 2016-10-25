@@ -169,19 +169,19 @@ A second result of interest will be the ability to gauge the academic progress, 
 \item Acceptance rate
 \item Average GPA, SAT, GRE, ACT, MCAT, ect for accepted students
 \end{itemize}
-\item Funding Attributes
+\item Funding Attributes (Database: As above)
+  \begin{itemize}
 \item Admissions during Fall,Spring,Summer
-\begin{itemize}
 \item Funding per department.
 \item Source of funding.
 \end{itemize}
-\item Quality Of Life Statistics
+\item Quality Of Life Statistics (Database:\href{https://www.oecdregionalwellbeing.org}{https://www.oecdregionalwellbeing.org} )
   \begin{itemize}
 \item Quality of life for city
 \item Cost of living
 \item average salary
 \end{itemize}
-\item Academics Progress Statistics
+\item Academics Progress Statistics (Database: \href{https://www.nsf.gov/statistics/data-tools.cfm}{https://www.nsf.gov/statistics/data-tools.cfm}
   \begin{itemize}
   \item Total publications for entire school in one year
   \item Total publications for each department in one year
@@ -194,7 +194,12 @@ A second result of interest will be the ability to gauge the academic progress, 
   The project will consist of (a) a selection bar on the left hand side where the user is able to determine which features and for what range values they would like to consider, (b) a map to it's right, (c) circled points on the map where each school is located, (d) five buttons beneath the map one of which allows the user to select specific schools to compare and the rest of which compare preset number of schools, i.e. if ten schools are selected then the ten nearest schools matching the user set criteria will be compared. Beneath will be (e) histograms demonstrating the top 10 attributes most often asked about schools such as tuition, general well being, acceptance rate, and so on. The x-axis of the histograms will be ambiguous due to the attributes not being correlated however each rectangle will be labeled as the attribute it represents. The scales of each rectangle will then be set with linear scaling whose domain is determined by the maximum values of the schools selected. And lastly, (f) beneath the histograms will be oval ranged gauges with circles representing where the selected schools are placed accordingly for all school statistics. A similar visualization can be seen on \href{https://www.oecdregionalwellbeing.org}{www.oecdregionalwellbeing.org}. 
  
   
-
+\begin{figure}[H]
+\centering{
+\includegraphics[width=.8\linewidth]{visualization.pdf}
+}
+\label{visualization sketch}
+\end{figure}
   \section{Must-Have Features}\textbf{ List the features without which you would consider your project to be a failure.}
   Necessary visualizations and features include a map projection, hoverable and clickable points on the map for schools, legend with school statistics, click feature for each school statistic in the legend which opens a range selector in which one drags to points along a legend to represent what range to be considered, the option to select specific schools to compare, the option to compare a preset number of similar schools which fall into the user defined features of interest and their ranges, histograms for each selected school displaying it's specific attributes, a more detailed set of all features for each school consisting of oval bars representing an attribute's range and circles for the value of each selected school.
 
