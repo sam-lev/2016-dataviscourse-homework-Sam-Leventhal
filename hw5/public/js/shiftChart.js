@@ -20,22 +20,42 @@ ShiftChart.prototype.init = function(){
  *
  * @param selectedStates data corresponding to the states selected on brush
  */
-ShiftChart.prototype.update = function(selectedStates){
+ShiftChart.prototype.update = function(selectedStates, flag){
+/*
     var self = this;
+    d3.selectAll('ul').remove();
+    var ul = d3.select("#stateList").append('ul');
 
-    // ******* TODO: PART V *******
-    //Display the names of selected states in a list
+    if (flag == 0) {
+        ul.selectAll("li")
+            .data(selectedStates)
+            .append("li")
+            .html(function (d, i) {
+                return d[0].State;
+            });
+        ul.selectAll("li")
+            .data(selectedStates)
+            .enter()
+            .append("li")
+            .html(function (d, i) {
+                return d[0].State;
+            });
+    }
 
-    //******** TODO: PART VI*******
-    //Use the shift data corresponding to the selected years and sketch a visualization
-    //that encodes the shift information
+   if (flag == 1) {
+        ul.selectAll("li")
+            .data(selectedStates)
+            .append("li")
+            .text(function (d, i) {
+                return d[0].YEAR;
+            });
 
-    //******** TODO: EXTRA CREDIT I*******
-    //Handle brush selection on the year chart and sketch a visualization
-    //that encodes the shift informatiomation for all the states on selected years
-
-    //******** TODO: EXTRA CREDIT II*******
-    //Create a visualization to visualize the shift data
-    //Update the visualization on brush events over the Year chart and Electoral Vote Chart
-
+        ul.selectAll("li")
+            .data(selectedStates)
+            .enter()
+            .append("li")
+            .text(function (d, i) {
+                return d[0].YEAR;
+            });
+*/
 };

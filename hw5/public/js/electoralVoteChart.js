@@ -4,10 +4,11 @@
  *
  * @param shiftChart an instance of the ShiftChart class
  */
-function ElectoralVoteChart(){
+function ElectoralVoteChart(shiftChart){
 
     var self = this;
     self.init();
+    self.shiftChart = shiftChart;
 };
 
 /**
@@ -101,15 +102,7 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
 	.range([0, self.svgWidth]);
 
     var allData = indp.concat(dem, rep);
-  /*  pr('dem');
-    pr(dem);
-    pr("ind");
-    pr(indp);
-    pr("rep");
-    pr(rep);
-    pr(allData.length);
-    pr(allData);
-  */
+
     //Create the stacked bar chart.
     //Use the global color scale to color code the rectangles.
     //HINT: Use .electoralVotes class to style your bars.
@@ -118,19 +111,24 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
     var bars = svg.selectAll("rect")
 	.data(allData);
 
-    d3.selectAll("rect").remove();
-    d3.selectAll("rect").enter()
-	.append("g")
-	.attr("height", self.svgHeight)
-	.attr("width", self.svgWidth);
+    svg.selectAll("rect").remove();
     
-    var barEnter = bars.enter()
+    svg.selectAll("text").remove();
+    
+
+    
+    
+    var barEnter = bars
 	.append("g")
 	.attr("height", self.svgHeight)
 	.attr("width", self.svgWidth);
     
 
-    
+    var barEnter = bars
+	.enter()
+	.append("g")
+	.attr("height", self.svgHeight)
+	.attr("width", self.svgWidth);
     
     var xShift = 0;
     barEnter.append("rect")
@@ -154,47 +152,52 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
 
     barEnter.append("rect")
 	.attr("width", 1)
-	.attr("height", 35)
+	.attr("height", 20)
 	.attr("x", evSum/2)
-	.attr("y", -12)
+	.attr("y", 2)
 	.attr("fill", "black");
 
     barEnter.append("text")
-    	.attr("dx", evSum/2-5)
+    	.attr("dx", evSum/4+10)
 	.attr("dy", 10)
 	.text(function(d){
 	    return "Electoral Vote ("+evSum/2+" needed to win)"
 	})
-	.attr("font-size","11px");
+	.attr("font-size","13px");
 
     barEnter.append("text")
     	.attr("dx", 0)
 	.attr("dy", 10)
 	.text(function(d){return d.I_EV_Total})
-	.attr("font-size","11px")
+	.attr("font-size","15px")
 	.attr("stroke", "green"); 
 
     barEnter.append("text")
-    	.attr("dx", function(d){ return parseInt(d.I_EV_Total)})
+    	.attr("dx", function(d){ return barScale( parseInt(d.I_EV_Total))})
 	.attr("dy", 10)
 	.text(function(d){ return d.D_EV_Total})
-	.attr("font-size","11px")
+	.attr("font-size","15px")
 	.attr("stroke", function(d){ return colorScale(-1*d.RD_Difference)});
 	     
     barEnter.append("text")
     	.attr("dx", function(d){  return evSum-10})
 	.attr("dy", 10)
 	.text(function(d){ return d.R_EV_Total})
-	.attr("font-size","12px")
+	.attr("font-size","15px")
 	.attr("stroke", function(d){ return colorScale(d.RD_Difference)});
     
     bars = bars.merge(barEnter);
-    d3.selectAll("rect").merge(barEnter);
     
     bars.attr("transform", function(d,i){
 	return "translate(30, 0)"
     });
-    
+
+    svg.selectAll("rect").attr("transform", function(d,i){
+	return "translate(0, 14)"
+    });
+    svg.selectAll("text").attr("transform", function(d,i){
+	return "translate(0, 2)"
+    });
     //Display total count of electoral votes won by the Democrat and Republican party
     //on top of the corresponding groups of bars.
     //HINT: Use the .electoralVoteText class to style your text elements;  Use this in combination with
@@ -214,5 +217,22 @@ ElectoralVoteChart.prototype.update = function(electionResult, colorScale){
     //Implement a call back method to handle the brush end event.
     //Call the update method of shiftChart and pass the data corresponding to brush selection.
     //HINT: Use the .brush class to style the brush.
+
+        var brush = d3.brushX().extent([[0,40],[self.svgWidth,80]]).on("end", function() {
+        var brushSelection = d3.event.selection;
+        // console.log(brushSelection[0],brushSelection[1]);
+        var rects = d3.selectAll("#electoral-vote > svg > g > rect");
+        var array = [];
+
+        rects.each(function(d,i){
+            if (brushSelection[1] > d3.select(this).attr("x") && brushSelection[0] < d3.select(this).attr("x")) {
+                    array.push(d3.select(this).data());
+            }
+        })
+        array.pop();
+        self.shiftChart.update(array,0);
+    });
+
+    svg.append("g").attr("class", "brush").call(brush);
 
 };

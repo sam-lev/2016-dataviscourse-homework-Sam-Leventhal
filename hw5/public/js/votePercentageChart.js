@@ -68,6 +68,15 @@ VotePercentageChart.prototype.handleNaN = function(value){
     }
     return result
 }
+
+VotePercentageChart.prototype.IPerson = function( nominee ){
+    if(nominee == ""){
+	nom = nominee
+    }else{
+	nom = "No One"
+    };
+    return nom
+}
 /**
  * Creates the stacked bar chart, text content and tool tips for Vote Percentage chart
  *
@@ -75,8 +84,7 @@ VotePercentageChart.prototype.handleNaN = function(value){
  */
 VotePercentageChart.prototype.update = function(electionResult){
     var self = this;
-
-    pr(electionResult[0].D_Nominee_prop);
+    var INominee= self.IPerson( electionResult[0].I_Nominee_prop );
     //for reference:https://github.com/Caged/d3-tip
     //Use this tool tip element to handle any hover over the chart
     tip = d3.tip().attr('class', 'd3-tip')
@@ -90,7 +98,7 @@ VotePercentageChart.prototype.update = function(electionResult){
               "result":[
 		  {"nominee": electionResult[0].D_Nominee_prop,"votecount": parseFloat(electionResult[0].D_Votes_Total),"percentage": parseFloat(self.handleNaN(electionResult[0].D_PopularPercentage)),"party":"D"} ,
 		  {"nominee": electionResult[0].R_Nominee_prop,"votecount": parseFloat(electionResult[0].R_Votes_Total),"percentage": parseFloat(self.handleNaN(electionResult[0].R_PopularPercentage)),"party":"R"} ,
-		  {"nominee": electionResult[0].I_Nominee_prop,"votecount": parseFloat(electionResult[0].I_Votes_Total),"percentage": parseFloat(self.handleNaN(electionResult[0].I_PopularPercentage)),"party":"I"}
+		  {"nominee": INominee  ,"votecount": parseFloat(electionResult[0].I_Votes_Total),"percentage": parseFloat(self.handleNaN(electionResult[0].I_PopularPercentage)),"party":"I"}
               ]
               }
               //pass this as an argument to the tooltip_render function then,
@@ -113,10 +121,13 @@ VotePercentageChart.prototype.update = function(electionResult){
     var divvotesPercentage = d3.select("#votes-percentage");
     var svg = divvotesPercentage.select("svg");
     var bars = svg.selectAll("rect")
-	.data([{"party": "I", "percent":parseFloat(electionResult[0].I_PopularPercentage)},{"party":"D", "percent": parseFloat(electionResult[0].D_PopularPercentage)},{"party":"R","percent": parseFloat(electionResult[0].R_PopularPercentage)}]);
+	.data([{"party": "I", "nominee": INominee,"percent":parseFloat(self.handleNaN(electionResult[0].I_PopularPercentage))},{"party":"D", "nominee": electionResult[0].D_Nominee_prop,"percent": parseFloat(self.handleNaN(electionResult[0].D_PopularPercentage))},{"party":"R","nominee": electionResult[0].R_Nominee_prop,"percent": parseFloat(self.handleNaN(electionResult[0].R_PopularPercentage))}]);
 
     bars.exit().remove();
+    svg.selectAll("rect").remove();
+    svg.selectAll("text").remove();
 
+    
     var barEnter = bars.enter()
 	.append("g");
 
@@ -124,9 +135,9 @@ VotePercentageChart.prototype.update = function(electionResult){
     
     var xShift = 0;
     barEnter.append("rect")
-	.attr("width", function(d){ return barScale( d.percent) })
+	.attr("width", function(d){ return barScale( self.handleNaN(d.percent)) })
 	.attr("height", 20)
-	.attr("x", function(d) { var xBar = xShift; xShift = xShift + d.percent; return barScale( xBar )})
+	.attr("x", function(d) { var xBar = xShift; xShift = xShift + self.handleNaN(d.percent); return barScale( xBar )})
 	.attr("y",3)
     	.attr("class", function(d, i){
 	    if(d.party == "D")
@@ -140,10 +151,73 @@ VotePercentageChart.prototype.update = function(electionResult){
     	.on("mouseenter", tip.show)
 	.on("mouseout", tip.hide);
 
+    barEnter.append("text")
+    	.attr("dx", function(d){
+	    if(d.party == "I"){
+		return barScale(parseFloat(self.handleNaN(electionResult[0].I_PopularPercentage))/4)}
+	    else if(d.party == "D"){ return barScale( (parseFloat(self.handleNaN(electionResult[0].I_PopularPercentage))+d.percent)/2  ) }
+	    else if( d.party =="R"){ return barScale(100-d.percent/3) }
+		
+	})
+	.attr("dy", 0)
+	.text(function(d){
+	    if(d.party == "I"){
+		if(electionResult[0].I_PopularPercentage){
+	
+		    return electionResult[0].I_Nominee_prop;
+		}else{
+		    return ""
+		};
+	    }
+	    else{ return d.nominee}
+	})
+	.attr("font-size","15px")
+	.attr("class", function(d){ return self.chooseClass(d.party)});
+
+    barEnter.append("text")
+    	.attr("dx", function(d){
+	    if(d.party == "I"){
+		return barScale(parseFloat(self.handleNaN(electionResult[0].I_PopularPercentage))/4)}
+	    else if(d.party == "D"){ return barScale( (parseFloat(self.handleNaN(electionResult[0].I_PopularPercentage))+d.percent)/2  ) }
+	    else if( d.party =="R"){ return barScale(100-d.percent/3) }
+		
+	})
+	.attr("dy", 10)
+	.text(function(d){
+	    if(d.party == "I"){
+		if(electionResult[0].I_PopularPercentage){
+		    return d.percent+"%";
+		}else{
+		    return ""
+		};
+	    }
+	    else{ return d.percent+"%"}
+	})
+	.attr("font-size","11px")
+	.attr("class", function(d){ return self.chooseClass(d.party)}); 
+/*
+    barEnter.append("text")
+    	.attr("dx", function(d){ return barScale( parseInt(d.))})
+	.attr("dy", 10)
+	.text(function(d){ return d.nominee})
+	.attr("font-size","15px")
+	.attr("stroke", function(d){ return colorScale(-1*d.RD_Difference)});
+	     
+    barEnter.append("text")
+    	.attr("dx", function(d){  return d-10})
+	.attr("dy", 10)
+	.text(function(d){ return d.R_Nominee_prop})
+	.attr("font-size","15px")
+	.attr("stroke", function(d){ return colorScale(d.RD_Difference)});*/
+    
     bars = bars.merge(barEnter);
 
-    bars.attr("transform", function(d,i){
-	return "translate(30, 0)"
+    svg.selectAll("rect").attr("transform", function(d,i){
+	return "translate(40, 40)"
+    });
+    
+    svg.selectAll("text").attr("transform", function(d,i){
+	return "translate(40, 20)"
     });
 
    

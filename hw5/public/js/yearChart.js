@@ -130,7 +130,27 @@ YearChart.prototype.update = function(){
 	})
 	.attr("font-size", "12px")
 	.attr("text-anchor", "middle");
-  
+
+    var line = data.selectAll("line")
+        .data(self.electionWinners)
+        .append("line");
+
+    var line = data.selectAll("line")
+        .enter()
+        .append("line");
+
+    circle = circle.merge(line);
+    
+    var lines = line
+        .attr("class","lineChart")
+        .attr("x1", function(d, i) {
+            return 10*i;
+        })
+        .attr("y1",0)
+        .attr("x2",function(d,i){
+                return 10*(i+1);
+        })
+        .attr("y2",0);
     //Style the chart by adding a dashed line that connects all these years.
     //HINT: Use .lineChart to style this dashed line
 
@@ -149,23 +169,14 @@ YearChart.prototype.update = function(){
 	    self.update();
 
 	    d3.csv("data/Year_Timeline_"+ year +".csv", function(error, yearData){
-		pr("yearDATA");
-		pr(yearData);
+
 		self.electoralVoteChart.update(yearData, self.colorScale);
 		self.votePercentageChart.update( yearData, self.colorScale);
-		// self.tileChart = tileChart.update( color, yearData);
-		// self.shiftChart = shiftChart.update( color, yearData);
-		// self.electoralVoteChart = electoralVoteChart.update( color, yearData);
-		// self.update();
-		
-		//update studff
+		self.tileChart.update( yearData, self.colorScale);
+		self.svg.append("g").attr("class", "brush").call(brush);
+	
 	    })
 
-	    //based on year selected, load year_timeline_XXX.csv and populate data
-	    //colorscale based on margin of victory
-		// pass color scale and data
-		/*
-*/
 	
     });
     //Election information corresponding to that year should be loaded and passed to
@@ -178,4 +189,22 @@ YearChart.prototype.update = function(){
     //Implement a call back method to handle the brush end event.
     //Call the update method of shiftChart and pass the data corresponding to brush selection.
     //HINT: Use the .brush class to style the brush.
+    var brush = d3.brushX().extent([[0,50],[self.svgWidth,80]]).on("end", function() {
+        var brushSelection = d3.event.selection;
+              pr(brushSelection);
+        console.log(brushSelection[0],brushSelection[1]);
+        var texts = self.svg.selectAll("text");
+ 
+        var array = [];
+
+        texts.each(function(d,i){
+            if (brushSelection[1] >= d3.select(this).attr("x") && brushSelection[0] <= d3.select(this).attr("x")) {
+                array.push(d3.select(this).data());
+            }
+        })
+        console.log(array);
+        self.electoralVoteChart.shiftChart.update(array,1);
+    });
+
+    self.svg.append("g").attr("class", "brush").call(brush);
 };

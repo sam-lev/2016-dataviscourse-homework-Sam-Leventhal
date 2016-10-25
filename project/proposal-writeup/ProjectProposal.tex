@@ -146,44 +146,58 @@ e-mail Addresses: Samuel ( samlev@cs.utah.edu ) Unnikrishnan (unniar@cs.utah.edu
 UIDs: Samuel (u0491567) Unnikrishnan (u1010114)\\
 Repository: \href{https://github.com/sam-lev/2016-dataviscourse-homework-Sam-Leventhal/tree/master/project}{https://github.com/sam-lev/2016-dataviscourse-homework-Sam-Leventhal/tree/master/project}
 
-\section{Background and Motivation}{. Discuss your motivations and reasons for choosing this project, especially any background or research interests that may have influenced your decision.}
-The project proposed is the resulted from $(a)$ an interest in designing an approachable and informative means for researching potential colleges when applying and $(b)$ investigate the relation between the academic progress in a field and the funding provided to that department.
+\section{Background and Motivation}.\textbf{ Discuss your motivations and reasons for choosing this project, especially any background or research interests that may have influenced your decision.}\\
+The project proposed results from $(a)$ an interest in designing an approachable and informative means for researching potential colleges when applying for undergraduate or graduate schools and $(b)$ to develop a measure and means of comparison between schools and departments based on ``academic progress'' as well as the relationship between academic progress and funding. 
 
-\section{Project Objectives}{. Provide the primary questions you are trying to answer with your visualization. What would you like to learn and accomplish? List the benefits.}
-The backbone of the project is a visualization which allows the user to easily browse numerous colleges and compare items of interest for an applying student such as tuition cost, ranking, and so on. Of these interests we intend to obtain the number of publications produced for each school department for each year. Using rate of publications as a measure it is then our goal to rank colleges based on their level of ''academic progress''. Secondary to this, if the data is obtainable, we hope to incorporate school funding per department. We believe it will be informative to view the level of funding provided to a department and the rate of publications for that department, the hypothesis being that those with more funding contribute more to the academia. If possible it would also be interesting the source of that funding, be it private or government.
-\section{Data}{. From where and how are you collecting your data? If appropriate, provide a link to your data sources.}
+\section{Project Objectives}\textbf{ Provide the primary questions you are trying to answer with your visualization. What would you like to learn and accomplish? List the benefits.}
+The backbone of the project is a visualization which allows the user to easily understand and compare numerous college statistics such as tuition cost, ranking, average salary after graduation and so on. Among others a college attribute of interest will be the number of publications produced for each school department within a year. Using rate of publications as a measure will allow the user to compare schools based on academic progress as well as see the change in academic progress between departments within a school over time. Secondary to this if the data is available we hope to incorporate school funding per department. We believe it will be informative to visualize the relation between funding and rate of publications. It would also be interesting the source of that funding, be it private or government.
+
+In terms of utility the visualization will allow for an intuitive alternative to the what is now a tedious and difficult process of determining which schools are a best fit for a student moving into higher education. Much of the web crawling now required during the school selection process will be well contained in an approachable and information rich visualization in that users are able to display similar schools based on their criteria as well as compare specific schools by selection or school attributes of interest.
+
+A second result of interest will be the ability to gauge the academic progress, tuition fees, acceptance rate, ect... of a school or schools over time. In this the development and future direction of school departments will be better estimated by the user. 
+
+\section{Data}\textbf{ From where and how are you collecting your data? If appropriate, provide a link to your data sources.}
+
 \begin{itemize}
   \setlength\itemsep{0.5em}
+\item College Statistics
+  \begin{itemize}
 \item College names
 \item College ranking
 \item Cost of tuition
 \item Number of Scholarships awarded with respect to number of students
 \item Acceptance rate
 \item Average GPA, SAT, GRE, ACT, MCAT, ect for accepted students
+\end{itemize}
+\item Funding Attributes 
+\begin{itemize}
 \item Funding per department (if possible to obtain)
-\item Total publications per year for school
-\item Total publications per department per year for school
 \item Source of funding (if possible)
+\end{itemize}
+\item Quality Of Life Statistics
+  \begin{itemize}
 \item Quality of life for city
 \item Cost of living
 \item average salary
+\end{itemize}
+\item Academics Progress Statistics
+  \begin{itemize}
+  \item Total publications for entire school in one year
+  \item Total publications for each department in one year
+    \end{itemize}
+\end{itemize}
+  \section{Data Processing}\textbf{ Do you expect to do substantial data cleanup? What quantities do you plan to derive from your data? How will data processing be implemented?}
+  There are near 1016 universities in the United States. In order to visualize these universities as circles on a map we may need to create a criteria on which schools will be included in the visualization. We may therefore need to do a basic parsing of the data to only incorporate schools satisfying these attributes. Second to this we may also need to data mine sites such as arxiv.org to organize the data by school, school department, and publication year. For funding we will also need to cluster the data in this way however also include source of funding and amount. 
+
+  \section{Visualization Design}\textbf{ How will you display your data? Provide some general ideas that you have for the visualization design. Develop three alternative prototype designs for your visualization. Create one final design that incorporates the best of your three designs. Describe your designs and justify your choices of visual encodings. We recommend you use the Five Design Sheet Methodology.}
+  The macro view of the visualization will include a feature selection bar on the left hand side where the user is able to determine which features and for what range values they would like to consider, a map to it's right, circled points on the map where each school is located, five buttons beneath the map, one of which allows the user to select specific schools to compare and the rest of which compare preset number of schools, i.e. if ten schools is selected then the ten nearest schools matching the user set criteria will be compared. Beneath will be histograms demonstratic the specific statistics asked by the user. And lastly beneath the histograms will be oval ranged gauges with circles representing schools are placed accordingly. A similar visualization can be seen on \href{https://www.oecdregionalwellbeing.org}{www.oecdregionalwellbeing.org}. 
  
-  \end{itemize}
-
-  \section{Data Processing}{. Do you expect to do substantial data cleanup? What quantities do you plan to derive from your data? How will data processing be implemented?}
-  There are near 1016 universities in the United States. In order to visualize these universities as circles on a map we may need to 
-
-  \section{Visualization Design}{. How will you display your data? Provide some general ideas that you have for the visualization design. Develop three alternative prototype designs for your visualization. Create one final design that incorporates the best of your three designs. Describe your designs and justify your choices of visual encodings. We recommend you use the Five Design Sheet Methodology.}
-  color coded by color for ranking
-  schools represented as circles on maps
-  shapes for school typse
-  click criteria to filter points
-  
   
 
-\section{Must-Have Features}{. List the features without which you would consider your project to be a failure.}
+  \section{Must-Have Features}\textbf{ List the features without which you would consider your project to be a failure.}
+  map, hoverable and clickable points for schools, legend with school statistics, hoverable to drag to points whose distance represents range in consideration for feature, option to select specific schools to compare, option to compare preset number of similar schools satisfying user defined features of interest and their range, histograms displaying of selected schools specific attributes, a more detailed set of all features for each school consisting of oval bars representing range of attribute under question and circles for the value of each selected school.
 
-\section{Optional Features}{. List the features which you consider to be nice to have, but not critical.}
+\section{Optional Features}\textbf{ List the features which you consider to be nice to have, but not critical.}
 
 
 \section{Project Schedule}{. Make sure that you plan your work so that you can avoid a big rush right before the final project deadline, and delegate different modules and responsibilities among your team members. Write this in terms of weekly deadlines.}
