@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.5.1)  25 OCT 2016 01:05
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.5.1)  25 OCT 2016 01:58
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -718,7 +718,17 @@ zlibrarybackgrounds.code.tex
 File: tikzlibrarybackgrounds.code.tex 2013/07/18 v3.0.1a (rcs-revision 1.3)
 \pgf@layerbox@background=\box63
 \pgf@layerboxsaved@background=\box64
-) (./ProjectProposal.aux)
+) (./ProjectProposal.aux
+
+LaTeX Warning: Label `visualization sketch' multiply defined.
+
+
+LaTeX Warning: Label `visualization sketch' multiply defined.
+
+
+LaTeX Warning: Label `visualization sketch' multiply defined.
+
+)
 \openout1 = `ProjectProposal.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 62.
@@ -735,8 +745,7 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 62.
 LaTeX Font Info:    ... okay on input line 62.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 62.
 LaTeX Font Info:    ... okay on input line 62.
-
-(/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
+ (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count146
 \scratchdimen=\dimen184
@@ -817,8 +826,35 @@ File: visualizationSketch.png Graphic file (type png)
 
 <use visualizationSketch.png>
 Package pdftex.def Info: visualizationSketch.png used on input line 198.
-(pdftex.def)             Requested size: 375.80542pt x 482.97095pt.
+(pdftex.def)             Requested size: 422.77661pt x 543.34651pt.
  [2]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<barchart.png, id=66, 2585.66pt x 1939.245pt>
+File: barchart.png Graphic file (type png)
+ <use barchart.png>
+Package pdftex.def Info: barchart.png used on input line 205.
+(pdftex.def)             Requested size: 422.77661pt x 317.06175pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<attributegauge.png, id=67, 2585.66pt x 1939.245pt>
+File: attributegauge.png Graphic file (type png)
+ <use attributegauge.png>
+Package pdftex.def Info: attributegauge.png used on input line 212.
+(pdftex.def)             Requested size: 422.77661pt x 317.06175pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<pointgraph.png, id=68, 2585.66pt x 1939.245pt>
+File: pointgraph.png Graphic file (type png)
+ <use pointgraph.png>
+Package pdftex.def Info: pointgraph.png used on input line 219.
+(pdftex.def)             Requested size: 375.80542pt x 281.8491pt.
+
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
@@ -827,21 +863,26 @@ Underfull \vbox (badness 1867) has occurred while \output is active []
 
  [3]
 [4]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 219.
- [5 <./visualizationSketch.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 219.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 240.
+ [5 <./visualizationSketch.png>] [6 <./barchart.png> <./attributegauge.png>] [7
+ <./pointgraph.png>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 240.
  (./ProjectProposal.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 219.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 219.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 240.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 240.
 Package rerunfilecheck Info: File `ProjectProposal.out' has not changed.
 (rerunfilecheck)             Checksum: 507FA1518FFD63FF0D9BF45E42BBA335;458.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 219.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 240.
  ) 
 Here is how much of TeX's memory you used:
- 19307 strings out of 494953
- 379113 string characters out of 6180978
- 474127 words of memory out of 5000000
- 22220 multiletter control sequences out of 15000+600000
+ 19324 strings out of 494953
+ 379402 string characters out of 6180978
+ 474166 words of memory out of 5000000
+ 22232 multiletter control sequences out of 15000+600000
  11045 words of font info for 42 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  55i,7n,67p,1380b,348s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -852,10 +893,10 @@ ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/tex
 mf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist
 /fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/
 type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on ProjectProposal.pdf (5 pages, 4036552 bytes).
+Output written on ProjectProposal.pdf (7 pages, 19109811 bytes).
 PDF statistics:
- 108 PDF objects out of 1000 (max. 8388607)
- 91 compressed objects within 1 object stream
- 15 named destinations out of 1000 (max. 500000)
- 90 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 121 PDF objects out of 1000 (max. 8388607)
+ 99 compressed objects within 1 object stream
+ 17 named destinations out of 1000 (max. 500000)
+ 105 words of extra memory for PDF output out of 10000 (max. 10000000)
 
