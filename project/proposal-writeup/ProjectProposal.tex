@@ -190,13 +190,12 @@ A second result of interest will be the ability to gauge the academic progress, 
   \section{Data Processing}\textbf{ Do you expect to do substantial data cleanup? What quantities do you plan to derive from your data? How will data processing be implemented?}
   There are near 1016 universities in the United States. In order to visualize these universities as circles on a map we may need to create a criteria on which schools will be included in the visualization. We may therefore need to do a basic parsing of the data to only incorporate schools satisfying these attributes. Second to this we may also need to data mine sites such as arxiv.org to organize the data by school, school department, and publication year. For funding we will also need to cluster the data in this way however also include source of funding and amount. 
 
-  \section{Visualization Design}\textbf{ How will you display your data? Provide some general ideas that you have for the visualization design. Develop three alternative prototype designs for your visualization. Create one final design that incorporates the best of your three designs. Describe your designs and justify your choices of visual encodings. We recommend you use the Five Design Sheet Methodology.}
-  The project will consist of (a) a selection bar on the left hand side where the user is able to determine which features and for what range values they would like to consider, (b) a map to it's right, (c) circled points on the map where each school is located, (d) five buttons beneath the map one of which allows the user to select specific schools to compare and the rest of which compare preset number of schools, i.e. if ten schools are selected then the ten nearest schools matching the user set criteria will be compared. Beneath will be (e) histograms demonstrating the top 10 attributes most often asked about schools such as tuition, general well being, acceptance rate, and so on. The x-axis of the histograms will be ambiguous due to the attributes not being correlated however each rectangle will be labeled as the attribute it represents. The scales of each rectangle will then be set with linear scaling whose domain is determined by the maximum values of the schools selected. And lastly, (f) beneath the histograms will be oval ranged gauges with circles representing where the selected schools are placed accordingly for all school statistics. A similar visualization can be seen on \href{https://www.oecdregionalwellbeing.org}{www.oecdregionalwellbeing.org}. 
- 
-  
-\begin{figure}[H]
+  \section{Visualization Design}
+  \textbf{ How will you display your data? Provide some general ideas that you have for the visualization design. Develop three alternative prototype designs for your visualization. Create one final design that incorporates the best of your three designs. Describe your designs and justify your choices of visual encodings. We recommend you use the Five Design Sheet Methodology.}
+  The project will consist of (a) a selection bar on the left hand side where the user is able to determine which features and for what range values they would like to consider, (b) a map to it's right, (c) circled points on the map where each school is located, (d) five buttons beneath the map one of which allows the user to select specific schools to compare and the rest of which compare preset number of schools, i.e. if ten schools are selected then the ten nearest schools matching the user set criteria will be compared. Beneath will be (e) histograms demonstrating the top 10 attributes most often asked about schools such as tuition, general well being, acceptance rate, and so on. The x-axis of the histograms will be ambiguous due to the attributes not being correlated however each rectangle will be labeled as the attribute it represents. The scales of each rectangle will then be set with linear scaling whose domain is determined by the maximum values of the schools selected. And lastly, (f) beneath the histograms will be oval ranged gauges with circles representing where the selected schools are placed accordingly for all school statistics. A similar visualization can be seen on \href{https://www.oecdregionalwellbeing.org}{www.oecdregionalwellbeing.org}. For a sketch of our intended visualization see below.  
+\begin{figure}[h]
 \centering{
-\includegraphics[width=.8\linewidth]{visualization.pdf}
+\includegraphics[width=.8\linewidth]{visualizationSketch.png}
 }
 \label{visualization sketch}
 \end{figure}
@@ -207,13 +206,15 @@ A second result of interest will be the ability to gauge the academic progress, 
 The feature which we feel nice to have would be to provide a visualization similar to GapMinder by Hans Rosling which was discussed in the class. Using this type of visualization we would be able to show the change in the school's performance over time.
 The attributes we would consider are academic progress in terms of patents, publications, sports, endowment etc.
 
-
+\vspace{5em}
 \section{Project Schedule}{. Make sure that you plan your work so that you can avoid a big rush right before the final project deadline, and delegate different modules and responsibilities among your team members. Write this in terms of weekly deadlines.}
-Week 1 after proposal - Mine data from the sources
-Week 2 - Map projections with Universities plotted
-Week 3 -  Attribute selection Legend and selection comparison
-Week 4 - Guage visualizations for selected universities
-Week 5 - Work on GapMinder type visualization
+\begin{itemize}
+\item Week 1 after proposal - Mine data from the sources
+\item Week 2 - Map projections with Universities plotted
+\item Week 3 -  Attribute selection Legend and selection comparison
+\item Week 4 - Guage visualizations for selected universities
+\item Week 5 - Work on GapMinder type visualization
+\end{itemize}
 
 \end{document}
 %%% Local Variables:
