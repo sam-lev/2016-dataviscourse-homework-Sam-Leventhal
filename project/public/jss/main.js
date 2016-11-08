@@ -11,7 +11,8 @@
     function init() {
         //Creating instances for each visualization
 
-
+        //static visualisation  comparing attributes of schools selected as
+        //histogram
         var histoChart = new HistoChart();
 
         var rangeScaleChart = new RangeScaleChart();
@@ -22,9 +23,10 @@
         d3.csv("data/collegelocation.csv", function (error, collegeData) {
             //pass the instances of all the charts that update on selection change in YearChart
             var mapCompare = new MapCompare(histoChart, rangeScaleChart, collegeData);
-            collegeMap.update();
+            mapCompare.update();
 
-	    var legendCompare = mew LegendCompare(histoChart, rangeScaleChart, collegeData);
+	        var legendCompare = new LegendCompare(histoChart, rangeScaleChart, collegeData);
+            legendCompare.update();
         });
     }
 
@@ -43,7 +45,7 @@
      * @returns {Main singleton class |*}
      */
     Main.getInstance = function(){
-        var self = this
+        var self = this;
         if(self.instance == null){
             self.instance = new Main();
 
