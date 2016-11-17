@@ -38,22 +38,29 @@ MapCompare.prototype.init = function(){
 MapCompare.prototype.chooseClass = function (rank) {
     var self = this;
     if (rank <= 10){
-        return "red";
+        return "republican";
     }
     else if (rank > 10 && rank <= 20){
-        return "black";
+        return "democrat";
     }
-    else if (party > 20){
-        return "blue";
+    else if (rank > 20){
+        return "independent";
     }
 }
 
 MapCompare.prototype.tooltip_render = function (tooltip_data) {
     var self = this;
+    console.log("tooltip");
     var text = "<ul>";
-    tooltip_data.forEach(function(row){
-        text += "<li class = "  + self.chooseClass(row.rank)+ ">" + row.Institution + row.Tuition+":\t\t"+row.State+"("+row.SAT-Scores+", " + row.ACT-Scores + ")" + "</li>"
+    tooltip_data.result.forEach(function(row){
+        text += "<li class = " + self.chooseClass(row.rank)+ ">" + row.Institution+ "</li>"
+        text += "<li class = " + self.chooseClass(row.rank)+ ">" + "Rank : " + row.rank + "</li>"
+        text += "<li class = " + self.chooseClass(row.rank)+ ">" + "State : " + row.State + "</li>"
+        text += "<li class = " + self.chooseClass(row.rank)+ ">" + "Tuition($ per year) : " + row.Tuition + "</li>"
+        text += "<li class = " + self.chooseClass(row.rank)+ ">" + "Average SAT Score : " + row.SATScores + "</li>"
+        text += "<li class = " + self.chooseClass(row.rank)+ ">" + "Average ACT Score : " + row.ACTScores + "</li>"
     });
+    return text;
 }
 
 /**
@@ -82,6 +89,7 @@ MapCompare.prototype.update = function() {
 	var path = d3.geoPath()
 		.projection(projection);
 
+    var svg;
 	//Load in GeoJSON data
 	d3.json("data/us-states.json", function(json) {
 
@@ -99,6 +107,24 @@ MapCompare.prototype.update = function() {
 
         console.log(filteredData);
 
+        tip = d3.tip().attr('class', 'd3-tip')
+            .direction('s')
+            .offset(function() {
+                return [0,0];
+            })
+            .html(function(d) {
+                // populate data in the following format
+                tooltip_data = {
+                    "result" :[
+                        {"rank": d.rank, "Tuition": d.Tuition, "Institution": d["institution.name"],"State": d.State_abbreviation, "SATScores": d.SAT_scores, "ACTScores": d.ACT_scores}
+                        ]
+                }
+                // pass this as an argument to the tooltip_render function then,
+                // return the HTML content returned from that method.
+                var renderer = self.tooltip_render(tooltip_data);
+                return renderer;
+            });
+
         self.svg.selectAll("circle")
             .data(filteredData)
             .enter()
@@ -111,7 +137,7 @@ MapCompare.prototype.update = function() {
                 // console.log(d);
                 return projection([d.longitude, d.latitude])[1];
             })
-            .attr("r", 2.5)
+            .attr("r", 4)
             .attr("fill", function (d) {
                 if(d.rank <= 10) {
                     return "red"
@@ -120,30 +146,21 @@ MapCompare.prototype.update = function() {
                 } else {
                     return "blue"
                 }
+            })
+            .on("mouseover",tip.show)
+            .on("mouseout",tip.hide)
+            .on("click",function(d,i) {
+
             });
 
-        // console.log("Reaches here");
-        tip = d3.tip().attr('class', 'd3-tip')
-            .direction('s')
-            .offset(function() {
-                return [0,0];
-            })
-            .html(function(d) {
-                // populate data in the following format
-                tooltip_data = {
-                    "rank": d.rank,
-                    "Institution":d["institution.name"],
-                    "Tuition":d.Tuition,
-                    "State":d.State_abbreviation,
-                    "SAT-Scores":d.SAT_scores,
-                    "ACT-Scores":d.ACT_scores
-                }
-                // pass this as an argument to the tooltip_render function then,
-                // return the HTML content returned from that method.
-                var renderer = self.tooltip_render(tooltip_data);
-                return renderer;
-            });
-        self.svg.call(tip);
+        console.log("Reaches here");
+
+        svg = d3.select("#map-Compare").select("svg").selectAll("circle");
+        console.log(svg);
+        // console.log(tip);
+        svg.call(tip);
+
+        // console.log(svg);
 	});
 
 }
