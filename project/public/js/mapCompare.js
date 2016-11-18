@@ -1,12 +1,12 @@
+// Global variable
+var projection;
 
-
-
-function MapCompare(histoChart, rangeScaleChart, collegeData) {
+function MapCompare() {
     var self = this;
 
-    self.histoChart = histoChart;
-    self.rangeScaleChart= rangeScaleChart;
-    self.collegeData= collegeData;
+    // self.histoChart = histoChart;
+    // self.rangeScaleChart= rangeScaleChart;
+    // self.collegeData= collegeData;
     self.init();
 };
 
@@ -32,6 +32,29 @@ MapCompare.prototype.init = function(){
     self.svg = divyearChart.append("svg")
         .attr("width",self.svgWidth)
         .attr("height",self.svgHeight);
+
+    //Had to add projection to work in v4.0
+    projection = d3.geoAlbersUsa()
+        .translate([self.svgWidth/2, self.svgHeight/2])
+        .scale([1000]);
+
+    // Define default path generator
+    var path = d3.geoPath()
+        .projection(projection);
+
+    var svg;
+    //Load in GeoJSON data
+    d3.json("data/us-states.json", function(json) {
+
+        //Bind data and create one path per GeoJSON feature
+        self.svg.selectAll("path")
+            .data(json.features)
+            .enter()
+            .append("path")
+            // here we use the familiar d attribute again to define the path
+            .attr("d", path);
+    });
+
 };
 
 
@@ -66,7 +89,7 @@ MapCompare.prototype.tooltip_render = function (tooltip_data) {
 /**
  * Creates a chart with circles representing each election year, populates text content and other required elements for the Year Chart
  */
-MapCompare.prototype.update = function() {
+MapCompare.prototype.update = function(filteredData) {
 	var self = this;
 
 	 //Domain definition for global color scale
@@ -79,89 +102,70 @@ MapCompare.prototype.update = function() {
 	 self.colorScale = d3.scaleQuantile()
 	 .domain(domain).range(range);
 
+    if(filteredData == null)
+        return;
 	// console.log("Call reaches here");
-	//Had to add projection to work in v4.0
-	var projection = d3.geoAlbersUsa()
-		.translate([self.svgWidth/2, self.svgHeight/2])
-		.scale([1000]);
+    console.log(filteredData);
+    d3.selectAll("circle").remove();
+    /*var filteredData = self.collegeData.filter(function (d) {
+     if(d.rank <= 30) return d;
+     });
 
-	// Define default path generator
-	var path = d3.geoPath()
-		.projection(projection);
+    console.log(filteredData);
+    // console.log(svg);*/
 
-    var svg;
-	//Load in GeoJSON data
-	d3.json("data/us-states.json", function(json) {
-
-		//Bind data and create one path per GeoJSON feature
-		self.svg.selectAll("path")
-			.data(json.features)
-			.enter()
-			.append("path")
-			// here we use the familiar d attribute again to define the path
-			.attr("d", path);
-
-        var filteredData = self.collegeData.filter(function (d) {
-            if(d.rank <= 30) return d;
+    tip = d3.tip().attr('class', 'd3-tip')
+        .direction('s')
+        .offset(function() {
+            return [0,0];
+        })
+        .html(function(d) {
+            // populate data in the following format
+            tooltip_data = {
+                "result" :[
+                    {"rank": d.rank, "Tuition": d.Tuition, "Institution": d["institution.name"],"State": d.State_abbreviation, "SATScores": d.SAT_scores, "ACTScores": d.ACT_scores}
+                ]
+            }
+            // pass this as an argument to the tooltip_render function then,
+            // return the HTML content returned from that method.
+            var renderer = self.tooltip_render(tooltip_data);
+            return renderer;
         });
 
-        console.log(filteredData);
+    self.svg.selectAll("circle")
+        .data(filteredData)
+        .enter()
+        .append("circle")
+        .attr("cx",function (d,i) {
+            // console.log(coordinates[i][0]);
+            return projection([d.longitude,d.latitude])[0];
+        })
+        .attr("cy", function(d,i){
+            // console.log(d);
+            return projection([d.longitude, d.latitude])[1];
+        })
+        .attr("r", 4)
+        .attr("fill", function (d) {
+            if(d.rank <= 10) {
+                return "red"
+            } else if (d.rank > 10 && d.rank <= 20) {
+                return "black"
+            } else {
+                return "blue"
+            }
+        })
+        .on("mouseover",tip.show)
+        .on("mouseout",tip.hide)
+        .on("click",function(d,i) {
 
-        tip = d3.tip().attr('class', 'd3-tip')
-            .direction('s')
-            .offset(function() {
-                return [0,0];
-            })
-            .html(function(d) {
-                // populate data in the following format
-                tooltip_data = {
-                    "result" :[
-                        {"rank": d.rank, "Tuition": d.Tuition, "Institution": d["institution.name"],"State": d.State_abbreviation, "SATScores": d.SAT_scores, "ACTScores": d.ACT_scores}
-                        ]
-                }
-                // pass this as an argument to the tooltip_render function then,
-                // return the HTML content returned from that method.
-                var renderer = self.tooltip_render(tooltip_data);
-                return renderer;
-            });
+        });
 
-        self.svg.selectAll("circle")
-            .data(filteredData)
-            .enter()
-            .append("circle")
-            .attr("cx",function (d,i) {
-                // console.log(coordinates[i][0]);
-                return projection([d.longitude,d.latitude])[0];
-            })
-            .attr("cy", function(d,i){
-                // console.log(d);
-                return projection([d.longitude, d.latitude])[1];
-            })
-            .attr("r", 4)
-            .attr("fill", function (d) {
-                if(d.rank <= 10) {
-                    return "red"
-                } else if (d.rank > 10 && d.rank <= 20) {
-                    return "black"
-                } else {
-                    return "blue"
-                }
-            })
-            .on("mouseover",tip.show)
-            .on("mouseout",tip.hide)
-            .on("click",function(d,i) {
+    console.log("Reaches here");
 
-            });
-
-        console.log("Reaches here");
-
-        svg = d3.select("#map-Compare").select("svg").selectAll("circle");
-        console.log(svg);
-        // console.log(tip);
-        svg.call(tip);
-
-        // console.log(svg);
-	});
-
+    svg = d3.select("#map-Compare").select("svg").selectAll("circle");
+    console.log(svg);
+    // console.log(tip);
+    if(!svg.empty())
+       svg.call(tip);
 }
 
