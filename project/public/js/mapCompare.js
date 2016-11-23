@@ -1,10 +1,10 @@
 // Global variable
 var projection;
 
-function MapCompare() {
+function MapCompare(histoChart) {
     var self = this;
 
-    // self.histoChart = histoChart;
+    self.histoChart = histoChart;
     // self.rangeScaleChart= rangeScaleChart;
     // self.collegeData= collegeData;
     self.init();
@@ -102,8 +102,12 @@ MapCompare.prototype.update = function(filteredData) {
 	 self.colorScale = d3.scaleQuantile()
 	 .domain(domain).range(range);
 
-    if(filteredData == null)
+    if(filteredData == null) {
+        var circles = d3.selectAll("circle");
+        if(!circles.empty())
+            circles.remove();
         return;
+    }
 	// console.log("Call reaches here");
     console.log(filteredData);
     d3.selectAll("circle").remove();
@@ -157,7 +161,7 @@ MapCompare.prototype.update = function(filteredData) {
         .on("mouseover",tip.show)
         .on("mouseout",tip.hide)
         .on("click",function(d,i) {
-
+            self.histoChart.update(d);
         });
 
     console.log("Reaches here");

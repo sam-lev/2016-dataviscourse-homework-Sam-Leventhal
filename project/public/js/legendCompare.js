@@ -1,5 +1,31 @@
+// Maintain the filtered data which could be sent to update
+var filtered;
+var lowerRank, higherRank;
+var rankSelected = false;
 
+var tuitionSelected = false;
+var lowerTuition, higherTuition;
 
+var incomeSelected = false;
+var lowerIncome, higherIncome;
+
+var lowerSAT, higherSAT;
+var SATSelected = false;
+
+var ACTSelected = false;
+var lowerACT, higherACT;
+
+var applicantSelected = false;
+var lowerApplicants, higherApplicants;
+
+var enrollmentSelected = false;
+var lowerEnrollment, higherEnrollment;
+
+var lowerMenPercent, higherMenPercent;
+var menSelected = false;
+
+var lowerWomenPercent, higherWomenPercent;
+var womenSelected = false;
 
 function LegendCompare(histoChart, rangeScaleChart, mapCompare, collegeData) {
     var self = this;
@@ -38,6 +64,67 @@ LegendCompare.prototype.init = function(){
 };
 
 
+LegendCompare.prototype.redraw = function(){
+    var self = this;
+
+    filtered = self.collegeData;
+    if(rankSelected) {
+        filtered = filtered.filter(function (d) {
+            if(d.rank > lowerRank && d.rank < higherRank)
+                return d;
+        });
+    }
+    if(tuitionSelected) {
+        filtered = filtered.filter(function (d) {
+            if(d.Tuition > lowerTuition && d.Tuition < higherTuition)
+                return d;
+        });
+    }
+    if(incomeSelected) {
+        filtered = filtered.filter(function (d) {
+            if(d.income > lowerIncome && d.income < higherIncome)
+                return d;
+        });
+    }
+    if(SATSelected) {
+        filtered = filtered.filter(function (d) {
+            if(d.SAT_scores > lowerSAT && d.SAT_scores < higherSAT)
+                return d;
+        });
+    }
+    if(ACTSelected) {
+        filtered = filtered.filter(function (d) {
+            if(d.ACT_scores > lowerACT && d.ACT_scores < higherACT)
+                return d;
+        });
+    }
+    if(applicantSelected) {
+        filtered = filtered.filter(function (d) {
+            if(d.Applicants_total > lowerApplicants && d.Applicants_total < higherApplicants)
+                return d;
+        });
+    }
+    if(enrollmentSelected) {
+        filtered = filtered.filter(function (d) {
+            if(d.year_fulltime_enrollment > lowerEnrollment && d.year_fulltime_enrollment < higherEnrollment)
+                return d;
+        });
+    }
+    if(menSelected) {
+        filtered = filtered.filter(function (d) {
+            if(d.Percent_admitted_men > lowerMenPercent && d.Percent_admitted_men < higherMenPercent)
+                return d;
+        });
+    }
+    if(womenSelected) {
+        filtered = filtered.filter(function (d) {
+            if(d.Percent_admitted_women > lowerWomenPercent && d.Percent_admitted_women < higherWomenPercent)
+                return d;
+        });
+    }
+    self.mapCompare.update(filtered);
+};
+
 /**
  * Creates a chart with circles representing each election year, populates text content and other required elements for the Year Chart
  */
@@ -53,6 +140,11 @@ LegendCompare.prototype.update = function(){
     //Global colorScale to be used consistently by all the charts
     self.colorScale = d3.scaleQuantile()
         .domain(domain).range(range);
+
+    if(filtered == null) {
+        filtered = self.collegeData;
+        self.mapCompare.update(filtered);
+    }
 
     // ******* TODO: PART I *******
     self.svg
@@ -137,101 +229,25 @@ LegendCompare.prototype.update = function(){
         .attr("fill","blue")
         .style("font-weight", "bold");
 
-    var bars1 = self.svg
-        .append("rect")
-        .classed("votesPercentage",true)
-        .attr("x", 300)
-        .attr("y",5)
-        .attr("width",300)
-        .attr("height",8)
-        .attr("fill","green");
-
-    var bars2 = self.svg
-        .append("rect")
-        .classed("votesPercentage",true)
-        .attr("x", 300)
-        .attr("y",35)
-        .attr("width",300)
-        .attr("height",8)
-        .attr("fill","green");
-
-    var bars3 = self.svg
-        .append("rect")
-        .classed("votesPercentage",true)
-        .attr("x", 300)
-        .attr("y",65)
-        .attr("width",300)
-        .attr("height",8)
-        .attr("fill","green");
-
-    var bars4 = self.svg
-        .append("rect")
-        .classed("votesPercentage",true)
-        .attr("x", 300)
-        .attr("y",95)
-        .attr("width",300)
-        .attr("height",8)
-        .attr("fill","green");
-
-    var bars5 = self.svg
-        .append("rect")
-        .classed("votesPercentage",true)
-        .attr("x", 300)
-        .attr("y",125)
-        .attr("width",300)
-        .attr("height",8)
-        .attr("fill","green");
-
-    var bars6 = self.svg
-        .append("rect")
-        .classed("votesPercentage",true)
-        .attr("x", 300)
-        .attr("y",155)
-        .attr("width",300)
-        .attr("height",8)
-        .attr("fill","green");
-
-    var bars7 = self.svg
-        .append("rect")
-        .classed("votesPercentage",true)
-        .attr("x", 300)
-        .attr("y",185)
-        .attr("width",300)
-        .attr("height",8)
-        .attr("fill","green");
-
-    var bars8 = self.svg
-        .append("rect")
-        .classed("votesPercentage",true)
-        .attr("x", 300)
-        .attr("y",215)
-        .attr("width",300)
-        .attr("height",8)
-        .attr("fill","green");
-
-    var bars9 = self.svg
-        .append("rect")
-        .classed("votesPercentage",true)
-        .attr("x", 300)
-        .attr("y",245)
-        .attr("width",300)
-        .attr("height",8)
-        .attr("fill","green");
-    // console.log(rects);
-
     // Create scale for getting data from all the brushes
     var rankScale = d3.scaleLinear()
         .range([0,30])
         .domain([300,self.svgWidth-190]);
 
-    // Maintain the filtered data which could be sent to update
-    var filtered;
-
     var brush1 = d3.brushX().extent([[300,2],[self.svgWidth-190,15]]).on("end", function() {
         var brushSelection = d3.event.selection;
         console.log(brushSelection);
+        if(brushSelection == null) {
+            this.clear;
+            filtered = null;
+            self.mapCompare.update(filtered);
+            rankSelected = false;
+            self.redraw();
+            return;
+        }
+        rankSelected = true;
         // console.log(brushSelection[0],brushSelection[1]);
-        var rects = d3.select("bars1");
+        var rects = d3.select(this);
         var array = [];
 
         rects.each(function(d,i){
@@ -240,11 +256,11 @@ LegendCompare.prototype.update = function(){
             }
         })
         array.pop();
-        console.log(brushSelection[0],brushSelection[1]);
-        console.log(array);
-        var lowerRank = rankScale(brushSelection[0]);
-        var higherRank = rankScale(brushSelection[1]);
-        console.log(lowerRank,higherRank);
+        // console.log(brushSelection[0],brushSelection[1]);
+        // console.log(array);
+        lowerRank = rankScale(brushSelection[0]);
+        higherRank = rankScale(brushSelection[1]);
+        // console.log(lowerRank,higherRank);
         if(filtered == null)
             filtered = self.collegeData;
         filtered = filtered.filter(function (d) {
@@ -255,6 +271,7 @@ LegendCompare.prototype.update = function(){
         self.mapCompare.update(filtered)
     });
     self.svg.append("g").attr("class", "brush").style("fill","yellow").call(brush1);
+
     self.svg
         .append("text")
         .attr("dx",280)
@@ -294,8 +311,17 @@ LegendCompare.prototype.update = function(){
     var brush2 = d3.brushX().extent([[300,32],[self.svgWidth-190,45]]).on("end", function() {
         var brushSelection = d3.event.selection;
         console.log(brushSelection);
+        if(brushSelection == null) {
+            this.clear;
+            filtered = null;
+            self.mapCompare.update(filtered);
+            tuitionSelected = false;
+            self.redraw();
+            return;
+        }
+        tuitionSelected = true;
         // console.log(brushSelection[0],brushSelection[1]);
-        var rects = d3.select("bars2");
+        var rects = d3.select(this);
         var array = [];
 
         rects.each(function(d,i){
@@ -304,18 +330,18 @@ LegendCompare.prototype.update = function(){
             }
         })
         array.pop();
-        console.log(brushSelection[0],brushSelection[1]);
-        console.log(array);
-        var lowerTuition = tuitionScale(brushSelection[0]);
-        var higherTuition = tuitionScale(brushSelection[1]);
-        console.log(lowerTuition,higherTuition);
+        // console.log(brushSelection[0],brushSelection[1]);
+        // console.log(array);
+        lowerTuition = tuitionScale(brushSelection[0]);
+        higherTuition = tuitionScale(brushSelection[1]);
+        // console.log(lowerTuition,higherTuition);
         if(filtered == null)
             filtered = self.collegeData;
         filtered = filtered.filter(function (d) {
             if(d.Tuition > lowerTuition && d.Tuition < higherTuition)
                 return d;
         });
-        console.log(filtered);
+        // console.log(filtered);
         self.mapCompare.update(filtered);
     });
 
@@ -344,8 +370,17 @@ LegendCompare.prototype.update = function(){
     var brush3 = d3.brushX().extent([[300,62],[self.svgWidth-190,75]]).on("end", function() {
         var brushSelection = d3.event.selection;
         console.log(brushSelection);
+        if(brushSelection == null) {
+            this.clear;
+            filtered = null;
+            self.mapCompare.update(filtered);
+            incomeSelected = false;
+            self.redraw();
+            return;
+        }
+        incomeSelected = true;
         // console.log(brushSelection[0],brushSelection[1]);
-        var rects = d3.select("bars3");
+        var rects = d3.select(this);
         var array = [];
 
         rects.each(function(d,i){
@@ -354,10 +389,10 @@ LegendCompare.prototype.update = function(){
             }
         })
         array.pop();
-        console.log(brushSelection[0],brushSelection[1]);
-        console.log(array);
-        var lowerIncome = incomeScale(brushSelection[0]);
-        var higherIncome = incomeScale(brushSelection[1]);
+        // console.log(brushSelection[0],brushSelection[1]);
+        // console.log(array);
+        lowerIncome = incomeScale(brushSelection[0]);
+        higherIncome = incomeScale(brushSelection[1]);
         // console.log(lowerTuition,higherTuition);
         if(filtered == null)
             filtered = self.collegeData;
@@ -391,11 +426,21 @@ LegendCompare.prototype.update = function(){
         .attr("font","3x")
         .attr("fill","black");
 
+
     var brush4 = d3.brushX().extent([[300,92],[self.svgWidth-190,105]]).on("end", function() {
         var brushSelection = d3.event.selection;
         console.log(brushSelection);
+        if(brushSelection == null) {
+            this.clear;
+            filtered = null;
+            self.mapCompare.update(filtered);
+            SATSelected = false;
+            self.redraw();
+            return;
+        }
+        SATSelected = true;
         // console.log(brushSelection[0],brushSelection[1]);
-        var rects = d3.select("bars4");
+        var rects = d3.select(this);
         var array = [];
 
         rects.each(function(d,i){
@@ -404,10 +449,10 @@ LegendCompare.prototype.update = function(){
             }
         })
         array.pop();
-        console.log(brushSelection[0],brushSelection[1]);
-        console.log(array);
-        var lowerSAT = SATScale(brushSelection[0]);
-        var higherSAT = SATScale(brushSelection[1]);
+        // console.log(brushSelection[0],brushSelection[1]);
+        // console.log(array);
+        lowerSAT = SATScale(brushSelection[0]);
+        higherSAT = SATScale(brushSelection[1]);
         // console.log(lowerTuition,higherTuition);
         if(filtered == null)
             filtered = self.collegeData;
@@ -415,7 +460,7 @@ LegendCompare.prototype.update = function(){
             if(d.SAT_scores > lowerSAT && d.SAT_scores < higherSAT)
                 return d;
         });
-        console.log(filtered);
+        // console.log(filtered);
         self.mapCompare.update(filtered);
     });
 
@@ -444,8 +489,17 @@ LegendCompare.prototype.update = function(){
     var brush5 = d3.brushX().extent([[300,122],[self.svgWidth-190,135]]).on("end", function() {
         var brushSelection = d3.event.selection;
         console.log(brushSelection);
+        if(brushSelection == null) {
+            this.clear;
+            filtered = null;
+            self.mapCompare.update(filtered);
+            ACTSelected = false;
+            self.redraw();
+            return;
+        }
+        ACTSelected = true;
         // console.log(brushSelection[0],brushSelection[1]);
-        var rects = d3.select("bars5");
+        var rects = d3.select(this);
         var array = [];
 
         rects.each(function(d,i){
@@ -454,10 +508,10 @@ LegendCompare.prototype.update = function(){
             }
         })
         array.pop();
-        console.log(brushSelection[0],brushSelection[1]);
-        console.log(array);
-        var lowerACT = ACTScale(brushSelection[0]);
-        var higherACT = ACTScale(brushSelection[1]);
+        // console.log(brushSelection[0],brushSelection[1]);
+        // console.log(array);
+        lowerACT = ACTScale(brushSelection[0]);
+        higherACT = ACTScale(brushSelection[1]);
         // console.log(lowerTuition,higherTuition);
         if(filtered == null)
             filtered = self.collegeData;
@@ -465,7 +519,7 @@ LegendCompare.prototype.update = function(){
             if(d.ACT_scores > lowerACT && d.ACT_scores < higherACT)
                 return d;
         });
-        console.log(filtered);
+        // console.log(filtered);
         self.mapCompare.update(filtered);
     });
 
@@ -494,8 +548,17 @@ LegendCompare.prototype.update = function(){
     var brush6 = d3.brushX().extent([[300,152],[self.svgWidth-190,165]]).on("end", function() {
         var brushSelection = d3.event.selection;
         console.log(brushSelection);
+        if(brushSelection == null) {
+            this.clear;
+            filtered = null;
+            self.mapCompare.update(filtered);
+            applicantSelected = false;
+            self.redraw();
+            return;
+        }
+        applicantSelected = true
         // console.log(brushSelection[0],brushSelection[1]);
-        var rects = d3.select("bars6");
+        var rects = d3.select(this);
         var array = [];
 
         rects.each(function(d,i){
@@ -504,18 +567,18 @@ LegendCompare.prototype.update = function(){
             }
         })
         array.pop();
-        console.log(brushSelection[0],brushSelection[1]);
-        console.log(array);
-        var lowerAppliants = TotalApplicantsScale(brushSelection[0]);
-        var higherApplicants = TotalApplicantsScale(brushSelection[1]);
+        // console.log(brushSelection[0],brushSelection[1]);
+        // console.log(array);
+        lowerApplicants = TotalApplicantsScale(brushSelection[0]);
+        higherApplicants = TotalApplicantsScale(brushSelection[1]);
         // console.log(lowerTuition,higherTuition);
         if(filtered == null)
             filtered = self.collegeData;
         filtered = filtered.filter(function (d) {
-            if(d.Applicants_total > lowerAppliants && d.Applicants_total < higherApplicants)
+            if(d.Applicants_total > lowerApplicants && d.Applicants_total < higherApplicants)
                 return d;
         });
-        console.log(filtered);
+        // console.log(filtered);
         self.mapCompare.update(filtered);
     });
 
@@ -544,8 +607,17 @@ LegendCompare.prototype.update = function(){
     var brush7 = d3.brushX().extent([[300,182],[self.svgWidth-190,195]]).on("end", function() {
         var brushSelection = d3.event.selection;
         console.log(brushSelection);
+        if(brushSelection == null) {
+            this.clear;
+            filtered = null;
+            self.mapCompare.update(filtered);
+            enrollmentSelected = false;
+            self.redraw();
+            return;
+        }
+        enrollmentSelected = true;
         // console.log(brushSelection[0],brushSelection[1]);
-        var rects = d3.select("bars7");
+        var rects = d3.select(this);
         var array = [];
 
         rects.each(function(d,i){
@@ -554,10 +626,10 @@ LegendCompare.prototype.update = function(){
             }
         })
         array.pop();
-        console.log(brushSelection[0],brushSelection[1]);
-        console.log(array);
-        var lowerEnrollment = TotalEnrollementScale(brushSelection[0]);
-        var higherEnrollment = TotalEnrollementScale(brushSelection[1]);
+        // console.log(brushSelection[0],brushSelection[1]);
+        // console.log(array);
+        lowerEnrollment = TotalEnrollementScale(brushSelection[0]);
+        higherEnrollment = TotalEnrollementScale(brushSelection[1]);
         // console.log(lowerTuition,higherTuition);
         if(filtered == null)
             filtered = self.collegeData;
@@ -565,7 +637,7 @@ LegendCompare.prototype.update = function(){
             if(d.year_fulltime_enrollment > lowerEnrollment && d.year_fulltime_enrollment < higherEnrollment)
                 return d;
         });
-        console.log(filtered);
+        // console.log(filtered);
         self.mapCompare.update(filtered);
     });
 
@@ -594,8 +666,17 @@ LegendCompare.prototype.update = function(){
     var brush8 = d3.brushX().extent([[300,212],[self.svgWidth-190,225]]).on("end", function() {
         var brushSelection = d3.event.selection;
         console.log(brushSelection);
+        if(brushSelection == null) {
+            this.clear;
+            filtered = null;
+            self.mapCompare.update(filtered);
+            menSelected = false;
+            self.redraw();
+            return;
+        }
+        menSelected = true;
         // console.log(brushSelection[0],brushSelection[1]);
-        var rects = d3.select("bars8");
+        var rects = d3.select(this);
         var array = [];
 
         rects.each(function(d,i){
@@ -604,10 +685,10 @@ LegendCompare.prototype.update = function(){
             }
         })
         array.pop();
-        console.log(brushSelection[0],brushSelection[1]);
-        console.log(array);
-        var lowerPercent = TotalMenPercentScale(brushSelection[0]);
-        var higherPercent = TotalMenPercentScale(brushSelection[1]);
+        // console.log(brushSelection[0],brushSelection[1]);
+        // console.log(array);
+        lowerMenPercent = TotalMenPercentScale(brushSelection[0]);
+        higherMenPercent = TotalMenPercentScale(brushSelection[1]);
         // console.log(lowerTuition,higherTuition);
         if(filtered == null)
             filtered = self.collegeData;
@@ -615,7 +696,7 @@ LegendCompare.prototype.update = function(){
             if(d.Percent_admitted_men > lowerPercent && d.Percent_admitted_woman < higherPercent)
                 return d;
         });
-        console.log(filtered);
+        // console.log(filtered);
         self.mapCompare.update(filtered);
     });
 
@@ -644,8 +725,17 @@ LegendCompare.prototype.update = function(){
     var brush9 = d3.brushX().extent([[300,242],[self.svgWidth-190,255]]).on("end", function() {
         var brushSelection = d3.event.selection;
         console.log(brushSelection);
+        if(brushSelection == null) {
+            this.clear;
+            filtered = null;
+            self.mapCompare.update(filtered);
+            womenSelected = false;
+            self.redraw();
+            return;
+        }
+        womenSelected = true;
         // console.log(brushSelection[0],brushSelection[1]);
-        var rects = d3.select("bars9");
+        var rects = d3.select(this);
         var array = [];
 
         rects.each(function(d,i){
@@ -654,10 +744,10 @@ LegendCompare.prototype.update = function(){
             }
         })
         array.pop();
-        console.log(brushSelection[0],brushSelection[1]);
-        console.log(array);
-        var lowerPercent = TotalPercentWomanScale(brushSelection[0]);
-        var higherPercent = TotalPercentWomanScale(brushSelection[1]);
+        // console.log(brushSelection[0],brushSelection[1]);
+        // console.log(array);
+        lowerWomenPercent = TotalPercentWomanScale(brushSelection[0]);
+        higherWomenPercent = TotalPercentWomanScale(brushSelection[1]);
         // console.log(lowerTuition,higherTuition);
         if(filtered == null)
             filtered = self.collegeData;
@@ -665,7 +755,7 @@ LegendCompare.prototype.update = function(){
             if(d.Percent_admitted_women > lowerPercent && d.Percent_admitted_women < higherPercent)
                 return d;
         });
-        console.log(filtered);
+        // console.log(filtered);
         self.mapCompare.update(filtered);
     });
 
