@@ -1,7 +1,5 @@
-var college1, college2, college3, college4, college5, college6, college7, college8, college9, college10;
-var college_1, college_2, college_3, college_4, college_5, college_6, college_7, college_8, college_9, college_10;
-var colleges = [];
-var count = 0;
+var colleges = ["New England College", "Campbell University", "The King's college", "Newbury College", "University of Michigan-Ann Arbor", "University of Minnesota-Twin Cities",
+    "Pennsylvania State University-Main Campus", "University of California-Irvine", "University of California-Davis", "University of California-San Diego"];
 var rankScale, incomeScale, tuitionScale, SATScale, ACTScale, TotalApplicantsScale, TotalEnrollmentScale, TotalMenPercentScale, TotalWomenPercentScale;
 var ranks = [7, 9,6,9,40,29,30,21,23,24];
 var tuitions = [33000,26240,31300,28950,13142,13555,16992,13149,13895,6766];
@@ -30,310 +28,40 @@ HistoChart.prototype.init = function(){
      *
      */
     self.margin = {top: 10, right: 20, bottom: 30, left: 50};
-    var divyearChart = d3.select("#school").classed("fullView", true);
-
     //Gets access to the div element created for this chart from HTML
-    self.svgBounds = divyearChart.node().getBoundingClientRect();
-    self.svgWidth = self.svgBounds.width - self.margin.left - self.margin.right;
+    // self.svgBounds = divyearChart.node().getBoundingClientRect();
+    // self.svgWidth = self.svgBounds.width - self.margin.left - self.margin.right;
     self.svgHeight = 800;
 
-    //creates svg element within the div
-    self.svg = divyearChart.append("svg")
-        .attr("width",self.svgWidth-325)
-        .attr("height",self.svgHeight);
-
-    var ranks = d3.select("#ranks").classed("fullView",true);
-    self.ranksSvg = ranks.append("svg")
+    self.ranksSvg = d3.select("#histo-chart").select("#ranks").append("svg")
         .attr("width",250)
-        .attr("heigth",400)
-        .attr("transform","translate(40,60)");
+        .attr("height",350);
 
-    self.svg
+    self.tuitionSvg = d3.select("#histo-chart").select("#tuitions").append("svg")
+        .attr("width",250)
+        .attr("height",350);
+
+    self.ranksSvg
         .append("text")
-        .attr("dx",450)
-        .attr("dy",40)
+        .attr("dx",0)
+        .attr("dy",30)
         .text("Rank")
         .attr("font","20x")
         .attr("fill","black")
         .style("font-weight", "bold");
 
-    self.svg
-        .append("text")
-        .attr("dx",700)
-        .attr("dy",40)
-        .text("Tuition")
-        .attr("font","20x")
-        .attr("fill","black")
-        .style("font-weight", "bold");
-
-    self.svg
-        .append("text")
-        .attr("dx",950)
-        .attr("dy",40)
-        .text("Income After Graduation")
-        .attr("font","20x")
-        .attr("fill","black")
-        .style("font-weight", "bold");
-
-    self.svg
-        .append("text")
-        .attr("dx",1200)
-        .attr("dy",40)
-        .text("Avg SAT Scores")
-        .attr("font","20x")
-        .attr("fill","black")
-        .style("font-weight", "bold");
-
-    self.svg
-        .append("text")
-        .attr("dx",1450)
-        .attr("dy",40)
-        .text("Avg ACT Scores")
-        .attr("font","20x")
-        .attr("fill","black")
-        .style("font-weight", "bold");
-
-    self.svg
-        .append("text")
-        .attr("dx",450)
-        .attr("dy",400)
-        .text("Total Applicants")
-        .attr("font","20x")
-        .attr("fill","black")
-        .style("font-weight", "bold");
-
-    self.svg
-        .append("text")
-        .attr("dx",700)
-        .attr("dy",400)
-        .text("Total Enrolled")
-        .attr("font","20x")
-        .attr("fill","black")
-        .style("font-weight", "bold");
-
-    self.svg
-        .append("text")
-        .attr("dx",950)
-        .attr("dy",400)
-        .text("% Admitted Men")
-        .attr("font","20x")
-        .attr("fill","black")
-        .style("font-weight", "bold");
-
-    self.svg
-        .append("text")
-        .attr("dx",1200)
-        .attr("dy",400)
-        .text("% Admitted Women")
-        .attr("font","20x")
-        .attr("fill","black")
-        .style("font-weight", "bold");
-
-    college1 = self.svg
-        .append("text")
-        .attr("dx",0)
-        .attr("dy",75)
-        .text("New England College")
-        .attr("font","20x")
-        .attr("fill","black");
-    colleges.push(college1);
-    college_1 = self.svg
-        .append("text")
-        .attr("dx",0)
-        .attr("dy",430)
-        .text("New England College")
-        .attr("font","20x")
-        .attr("fill","black");
-    colleges.push(college_1);
-    college2 = self.svg
-        .append("text")
-        .attr("dx",0)
-        .attr("dy",105)
-        .text("Campbell University")
-        .attr("font","20x")
-        .attr("fill","black");
-    colleges.push(college2);
-    college_2 = self.svg
-        .append("text")
-        .attr("dx",0)
-        .attr("dy",460)
-        .text("Campbell University")
-        .attr("font","20x")
-        .attr("fill","black");
-    colleges.push(college_2);
-    college3 = self.svg
-        .append("text")
-        .attr("dx",0)
-        .attr("dy",135)
-        .text("The King's college")
-        .attr("font","20x")
-        .attr("fill","black");
-    colleges.push(college3);
-    college_3 = self.svg
-        .append("text")
-        .attr("dx",0)
-        .attr("dy",490)
-        .text("The King's college")
-        .attr("font","20x")
-        .attr("fill","black");
-    colleges.push(college_3);
-    college4 = self.svg
-        .append("text")
-        .attr("dx",0)
-        .attr("dy",165)
-        .text("Newbury College")
-        .attr("font","20x")
-        .attr("fill","black");
-    colleges.push(college4);
-    college_4 = self.svg
-        .append("text")
-        .attr("dx",0)
-        .attr("dy",520)
-        .text("Newbury College")
-        .attr("font","20x")
-        .attr("fill","black");
-    colleges.push(college_4);
-    college5 = self.svg
-        .append("text")
-        .attr("dx",0)
-        .attr("dy",195)
-        .text("University of Michigan-Ann Arbor")
-        .attr("font","20x")
-        .attr("fill","black");
-    colleges.push(college5);
-    college_5 = self.svg
-        .append("text")
-        .attr("dx",0)
-        .attr("dy",550)
-        .text("University of Michigan-Ann Arbor")
-        .attr("font","20x")
-        .attr("fill","black");
-    colleges.push(college_5);
-    college6 = self.svg
-        .append("text")
-        .attr("dx",0)
-        .attr("dy",225)
-        .text("University of Minnesota-Twin Cities")
-        .attr("font","20x")
-        .attr("fill","black");
-    colleges.push(college6);
-    college_6 = self.svg
-        .append("text")
-        .attr("dx",0)
-        .attr("dy",580)
-        .text("University of Minnesota-Twin Cities")
-        .attr("font","20x")
-        .attr("fill","black");
-    colleges.push(college_6);
-    college7 = self.svg
-        .append("text")
-        .attr("dx",0)
-        .attr("dy",255)
-        .text("Pennsylvania State University-Main Campus")
-        .attr("font","20x")
-        .attr("fill","black");
-    colleges.push(college7);
-    college_7 = self.svg
-        .append("text")
-        .attr("dx",0)
-        .attr("dy",610)
-        .text("Pennsylvania State University-Main Campus")
-        .attr("font","20x")
-        .attr("fill","black");
-    colleges.push(college_7);
-    college8 = self.svg
-        .append("text")
-        .attr("dx",0)
-        .attr("dy",285)
-        .text("University of California-Irvine")
-        .attr("font","20x")
-        .attr("fill","black");
-    colleges.push(college8);
-    college_8 = self.svg
-        .append("text")
-        .attr("dx",0)
-        .attr("dy",640)
-        .text("University of California-Irvine")
-        .attr("font","20x")
-        .attr("fill","black");
-    colleges.push(college_8);
-    college9 = self.svg
-        .append("text")
-        .attr("dx",0)
-        .attr("dy",315)
-        .text("University of California-Davis")
-        .attr("font","20x")
-        .attr("fill","black");
-    colleges.push(college9);
-    college_9 = self.svg
-        .append("text")
-        .attr("dx",0)
-        .attr("dy",670)
-        .text("University of California-Davis")
-        .attr("font","20x")
-        .attr("fill","black");
-    colleges.push(college_9);
-    college10 = self.svg
-        .append("text")
-        .attr("dx",0)
-        .attr("dy",345)
-        .text("University of California-San Diego")
-        .attr("font","20x")
-        .attr("fill","black");
-    colleges.push(college10);
-    college_10 = self.svg
-        .append("text")
-        .attr("dx",0)
-        .attr("dy",700)
-        .text("University of California-San Diego")
-        .attr("font","20x")
-        .attr("fill","black");
-    colleges.push(college_10);
+    var barRanks = self.ranksSvg.selectAll("g").data(ranks)
+        .enter().append("g");
 
     rankScale = d3.scaleLinear()
         .range([0,200])
         .domain([0,100]);
 
-    tuitionScale = d3.scaleLinear()
-        .range([0,200])
-        .domain([80,49630]);
-
-    incomeScale = d3.scaleLinear()
-        .range([0,72676])
-        .domain([1000,1200]);
-
-    SATScale = d3.scaleLinear()
-        .range([0,8795])
-        .domain([1250,1450]);
-
-    ACTScale = d3.scaleLinear()
-        .range([0,100])
-        .domain([1500,1700]);
-
-    TotalApplicantsScale = d3.scaleLinear()
-        .range([0,72676])
-        .domain([450,650]);
-
-    TotalEnrollementScale = d3.scaleLinear()
-        .range([12,61874])
-        .domain([700,950]);
-
-    TotalMenPercentScale = d3.scaleLinear()
-        .range([0,100])
-        .domain([1000,1200]);
-
-    TotalWomenPercentScale = d3.scaleLinear()
-        .range([0,100])
-        .domain([1250,1450]);
-
-    var bars = self.ranksSvg.selectAll("g").data(ranks)
-        .enter().append("g");
-
-    var RBars = bars
+    var rect = barRanks
         .append("rect")
-        .attr("x", 450)
+        .attr("x", 0)
         .attr("y", function (d,i) {
-            return i*30+60;
+            return i*30+40;
         })
         .attr("height",27)
         .attr("width", function (d) {
@@ -343,24 +71,37 @@ HistoChart.prototype.init = function(){
         .attr("stroke","darkgrey")
         .attr("stroke-width","1px");
 
-    bars.append("text")
+    var text = barRanks.append("text")
         .attr("x",function (d) {
-            return 450+rankScale(d)+5;
+            return rankScale(d)+5;
         })
         .attr("y",function (d,i) {
-            return i*30+80;
+            return i*30+58;
         })
         .text(function (d) {
             return d;
         });
 
-    var tuitionBars = self.svg.append("g").data(tuitions);
+    self.tuitionSvg
+        .append("text")
+        .attr("dx",0)
+        .attr("dy",30)
+        .text("Tuition")
+        .attr("font","20x")
+        .attr("fill","black")
+        .style("font-weight", "bold");
 
-    var Tbars = tuitionBars
-        .append("rect")
-        .attr("x", 700)
+    var tuitionBars = self.tuitionSvg.selectAll("g").data(tuitions)
+        .enter().append("g");
+
+    tuitionScale = d3.scaleLinear()
+        .range([0,200])
+        .domain([80,49630]);
+
+    rect = tuitionBars.append("rect")
+        .attr("x", 0)
         .attr("y", function (d,i) {
-            return i*30+60;
+            return i*30+40;
         })
         .attr("height",27)
         .attr("width", function (d) {
@@ -370,14 +111,361 @@ HistoChart.prototype.init = function(){
         .attr("stroke","darkgrey")
         .attr("stroke-width","1px");
 
-    console.log(Tbars);
+    text = tuitionBars.append("text")
+        .attr("x",function (d) {
+            return tuitionScale(d)+5;
+        })
+        .attr("y",function (d,i) {
+            return i*30+58;
+        })
+        .text(function (d) {
+            return d;
+        });
 
-    bars = bars.merge(tuitionBars);
+    self.incomeSvg = d3.select("#histo-chart").select("#income").append("svg")
+        .attr("width",250)
+        .attr("height",350);
 
-    console.log(bars);
+    self.incomeSvg
+        .append("text")
+        .attr("dx",0)
+        .attr("dy",30)
+        .text("Income After Graduation")
+        .attr("font","20x")
+        .attr("fill","black")
+        .style("font-weight", "bold");
+
+     incomeScale = d3.scaleLinear()
+        .range([0,200])
+        .domain([0,72676]);
+
+    var incomeBars = self.incomeSvg.selectAll("g").data(incomes)
+        .enter().append("g");
+
+    rect = incomeBars.append("rect")
+        .attr("x", 0)
+        .attr("y", function (d,i) {
+            return i*30+40;
+        })
+        .attr("height",27)
+        .attr("width", function (d) {
+            return incomeScale(d);
+        })
+        .attr("fill","red")
+        .attr("stroke","darkgrey")
+        .attr("stroke-width","1px");
+
+    text = incomeBars.append("text")
+        .attr("x",function (d) {
+            return incomeScale(d)+5;
+        })
+        .attr("y",function (d,i) {
+            return i*30+58;
+        })
+        .text(function (d) {
+            return d;
+        });
 
 
+    self.SATSvg = d3.select("#histo-chart").select("#SAT").append("svg")
+        .attr("width",250)
+        .attr("height",350);
 
+    self.SATSvg
+        .append("text")
+        .attr("dx",0)
+        .attr("dy",30)
+        .text("Avg SAT Scores")
+        .attr("font","20x")
+        .attr("fill","black")
+        .style("font-weight", "bold");
+
+    SATScale = d3.scaleLinear()
+        .range([0,200])
+        .domain([0,8795]);
+
+    var SATBars = self.SATSvg.selectAll("g").data(SAT)
+        .enter().append("g");
+
+    rect = SATBars.append("rect")
+        .attr("x", 0)
+        .attr("y", function (d,i) {
+            return i*30+40;
+        })
+        .attr("height",27)
+        .attr("width", function (d) {
+            if(d == "NA")
+                d = 0;
+            return SATScale(d);
+        })
+        .attr("fill","pink")
+        .attr("stroke","darkgrey")
+        .attr("stroke-width","1px");
+
+    text = SATBars.append("text")
+        .attr("x",function (d) {
+            if(d== "NA")
+                d = 0;
+            return SATScale(d)+5;
+        })
+        .attr("y",function (d,i) {
+            return i*30+58;
+        })
+        .text(function (d) {
+            if(d==0)
+                return "NA"
+            return d;
+        });
+
+    self.ACTSvg = d3.select("#histo-chart").select("#ACT").append("svg")
+        .attr("width",250)
+        .attr("height",350);
+
+    self.ACTSvg
+        .append("text")
+        .attr("dx",0)
+        .attr("dy",30)
+        .text("Avg ACT Scores")
+        .attr("font","20x")
+        .attr("fill","black")
+        .style("font-weight", "bold");
+
+    ACTScale = d3.scaleLinear()
+        .range([0,200])
+        .domain([0,100]);
+
+    var ACTBars = self.ACTSvg.selectAll("g").data(ACT)
+        .enter().append("g");
+
+    rect = ACTBars.append("rect")
+        .attr("x", 0)
+        .attr("y", function (d,i) {
+            return i*30+40;
+        })
+        .attr("height",27)
+        .attr("width", function (d) {
+            if(d == "NA")
+                d = 0;
+            return ACTScale(d);
+        })
+        .attr("fill","violet")
+        .attr("stroke","darkgrey")
+        .attr("stroke-width","1px");
+
+    text = ACTBars.append("text")
+        .attr("x",function (d) {
+            if(d== "NA")
+                d = 0;
+            return ACTScale(d)+5;
+        })
+        .attr("y",function (d,i) {
+            return i*30+58;
+        })
+        .text(function (d) {
+            if(d==0)
+                return "NA";
+            return d;
+        });
+
+    self.AppSvg = d3.select("#histo-chart").select("#Applicants").append("svg")
+        .attr("width",250)
+        .attr("height",350);
+
+    self.AppSvg
+        .append("text")
+        .attr("dx",0)
+        .attr("dy",30)
+        .text("Total Applicants")
+        .attr("font","20x")
+        .attr("fill","black")
+        .style("font-weight", "bold");
+
+    TotalApplicantsScale = d3.scaleLinear()
+        .range([0,200])
+        .domain([0,72676]);
+
+    var AppBars = self.AppSvg.selectAll("g").data(applicants)
+        .enter().append("g");
+
+    rect = AppBars.append("rect")
+        .attr("x", 0)
+        .attr("y", function (d,i) {
+            return i*30+40;
+        })
+        .attr("height",27)
+        .attr("width", function (d) {
+            if(d == "NA")
+                d = 0;
+            return TotalApplicantsScale(d);
+        })
+        .attr("fill","purple")
+        .attr("stroke","darkgrey")
+        .attr("stroke-width","1px");
+
+    text = AppBars.append("text")
+        .attr("x",function (d) {
+            if(d== "NA")
+                d = 0;
+            return TotalApplicantsScale(d)+5;
+        })
+        .attr("y",function (d,i) {
+            return i*30+58;
+        })
+        .text(function (d) {
+            if(d==0)
+                return "NA";
+            return d;
+        });
+
+    self.EnrollSvg = d3.select("#histo-chart").select("#Enrolled").append("svg")
+        .attr("width",250)
+        .attr("height",350);
+
+    self.EnrollSvg
+        .append("text")
+        .attr("dx",0)
+        .attr("dy",30)
+        .text("Total Enrolled")
+        .attr("font","20x")
+        .attr("fill","black")
+        .style("font-weight", "bold");
+
+    TotalEnrollmentScale = d3.scaleLinear()
+        .range([0,200])
+        .domain([0,61874]);
+
+    var EnrollBars = self.EnrollSvg.selectAll("g").data(enrolled)
+        .enter().append("g");
+
+    rect = EnrollBars.append("rect")
+        .attr("x", 0)
+        .attr("y", function (d,i) {
+            return i*30+40;
+        })
+        .attr("height",27)
+        .attr("width", function (d) {
+            if(d == "NA")
+                d = 0;
+            return TotalEnrollmentScale(d);
+        })
+        .attr("fill","maroon")
+        .attr("stroke","darkgrey")
+        .attr("stroke-width","1px");
+
+    text = EnrollBars.append("text")
+        .attr("x",function (d) {
+            if(d== "NA")
+                d = 0;
+            return TotalEnrollmentScale(d)+5;
+        })
+        .attr("y",function (d,i) {
+            return i*30+58;
+        })
+        .text(function (d) {
+            if(d==0)
+                return "NA";
+            return d;
+        });
+
+    self.MenSvg = d3.select("#histo-chart").select("#Men").append("svg")
+        .attr("width",250)
+        .attr("height",350);
+
+    self.MenSvg
+        .append("text")
+        .attr("dx",0)
+        .attr("dy",30)
+        .text("Percent Admitted Men")
+        .attr("font","20x")
+        .attr("fill","black")
+        .style("font-weight", "bold");
+
+    TotalMenPercentScale = d3.scaleLinear()
+        .range([0,200])
+        .domain([0,100]);
+
+    var MenPercentBars = self.MenSvg.selectAll("g").data(men)
+        .enter().append("g");
+
+    rect = MenPercentBars.append("rect")
+        .attr("x", 0)
+        .attr("y", function (d,i) {
+            return i*30+40;
+        })
+        .attr("height",27)
+        .attr("width", function (d) {
+            if(d == "NA")
+                d = 0;
+            return TotalMenPercentScale(d);
+        })
+        .attr("fill","crimson")
+        .attr("stroke","darkgrey")
+        .attr("stroke-width","1px");
+
+    text = MenPercentBars.append("text")
+        .attr("x",function (d) {
+            if(d== "NA")
+                d = 0;
+            return TotalMenPercentScale(d)+5;
+        })
+        .attr("y",function (d,i) {
+            return i*30+58;
+        })
+        .text(function (d) {
+            if(d==0)
+                return "NA";
+            return d;
+        });
+
+    self.WomenSvg = d3.select("#histo-chart").select("#Women").append("svg")
+        .attr("width",250)
+        .attr("height",350);
+
+    self.WomenSvg
+        .append("text")
+        .attr("dx",0)
+        .attr("dy",30)
+        .text("Percent Admitted Women")
+        .attr("font","20x")
+        .attr("fill","black")
+        .style("font-weight", "bold");
+
+    TotalWomenPercentScale = d3.scaleLinear()
+        .range([0,200])
+        .domain([0,100]);
+
+    WomenBars = self.WomenSvg.selectAll("g").data(women)
+        .enter().append("g");
+
+    rect = WomenBars.append("rect")
+        .attr("x", 0)
+        .attr("y", function (d,i) {
+            return i*30+40;
+        })
+        .attr("height",27)
+        .attr("width", function (d) {
+            if(d == "NA")
+                d = 0;
+            return TotalWomenPercentScale(d);
+        })
+        .attr("fill","green")
+        .attr("stroke","darkgrey")
+        .attr("stroke-width","1px");
+
+    text = WomenBars.append("text")
+        .attr("x",function (d) {
+            if(d== "NA")
+                d = 0;
+            return TotalWomenPercentScale(d)+5;
+        })
+        .attr("y",function (d,i) {
+            return i*30+58;
+        })
+        .text(function (d) {
+            if(d==0)
+                return "NA";
+            return d;
+        });
 };
 
 /**
@@ -386,8 +474,372 @@ HistoChart.prototype.init = function(){
  * @param electionResult election data for the year selected
  * @param colorScale global quantile scale based on the winning margin between republicans and democrats
  */
-HistoChart.prototype.update = function(data){
+HistoChart.prototype.update = function(data,selection){
     var self = this;
     console.log(data);
+    console.log(selection);
+
+    var chosen = d3.selectAll("#ranks > svg > g > rect");
+    // console.log(chosen);
+    chosen
+        .attr("x", 0)
+        .attr("y", function (d,i) {
+            return i*30+40;
+        })
+        .attr("height",27)
+        .attr("width", function (d,i) {
+            if(selection == i)
+                d = data.rank;
+            if(d == "NA")
+                d = 0;
+            return rankScale(d);
+        })
+        .attr("fill","yellow")
+        .attr("stroke","darkgrey")
+        .attr("stroke-width","1px");
+
+    chosen = d3.selectAll("#ranks > svg > g > text");
+
+    chosen
+        .attr("x",function (d,i) {
+            if(selection == i)
+                d = data.rank;
+            if(d== "NA")
+                d = 0;
+            return rankScale(d)+5;
+        })
+        .attr("y",function (d,i) {
+            return i*30+58;
+        })
+        .text(function (d,i) {
+            if(i == selection)
+                d = data.rank;
+            if(d==0)
+                return "NA";
+            return d;
+        });
+
+    chosen = d3.selectAll("#tuitions > svg > g > rect");
+    // console.log(chosen);
+    chosen
+        .attr("x", 0)
+        .attr("y", function (d,i) {
+            return i*30+40;
+        })
+        .attr("height",27)
+        .attr("width", function (d,i) {
+            if(selection == i)
+                d = data.Tuition;
+            if(d == "NA")
+                d = 0;
+            return tuitionScale(d);
+        })
+        .attr("fill","orange")
+        .attr("stroke","darkgrey")
+        .attr("stroke-width","1px");
+
+    chosen = d3.selectAll("#tuitions > svg > g > text");
+
+    chosen
+        .attr("x",function (d,i) {
+            if(selection == i)
+                d = data.Tuition;
+            if(d== "NA")
+                d = 0;
+            return tuitionScale(d)+5;
+        })
+        .attr("y",function (d,i) {
+            return i*30+58;
+        })
+        .text(function (d,i) {
+            if(i == selection)
+                d = data.Tuition;
+            if(d==0)
+                return "NA";
+            return d;
+        });
+
+    chosen = d3.selectAll("#income > svg > g > rect");
+    // console.log(chosen);
+    chosen
+        .attr("x", 0)
+        .attr("y", function (d,i) {
+            return i*30+40;
+        })
+        .attr("height",27)
+        .attr("width", function (d,i) {
+            if(selection == i)
+                d = data.income;
+            if(d == "NA")
+                d = 0;
+            return incomeScale(d);
+        })
+        .attr("fill","red")
+        .attr("stroke","darkgrey")
+        .attr("stroke-width","1px");
+
+    chosen = d3.selectAll("#income > svg > g > text");
+
+    chosen
+        .attr("x",function (d,i) {
+            if(selection == i)
+                d = data.income;
+            if(d== "NA")
+                d = 0;
+            return incomeScale(d)+5;
+        })
+        .attr("y",function (d,i) {
+            return i*30+58;
+        })
+        .text(function (d,i) {
+            if(i == selection)
+                d = data.income;
+            if(d==0)
+                return "NA";
+            return d;
+        });
+
+    chosen = d3.selectAll("#SAT > svg > g > rect");
+    // console.log(chosen);
+    chosen
+        .attr("x", 0)
+        .attr("y", function (d,i) {
+            return i*30+40;
+        })
+        .attr("height",27)
+        .attr("width", function (d,i) {
+            if(selection == i)
+                d = data.SAT_scores;
+            if(d == "NA")
+                d = 0;
+            return SATScale(d);
+        })
+        .attr("fill","pink")
+        .attr("stroke","darkgrey")
+        .attr("stroke-width","1px");
+
+    chosen = d3.selectAll("#SAT > svg > g > text");
+
+    chosen
+        .attr("x",function (d,i) {
+            if(selection == i)
+                d = data.SAT_scores;
+            if(d== "NA")
+                d = 0;
+            return SATScale(d)+5;
+        })
+        .attr("y",function (d,i) {
+            return i*30+58;
+        })
+        .text(function (d,i) {
+            if(i == selection)
+                d = data.SAT_scores;
+            if(d==0)
+                return "NA";
+            return d;
+        });
+
+    chosen = d3.selectAll("#ACT > svg > g > rect");
+    // console.log(chosen);
+    chosen
+        .attr("x", 0)
+        .attr("y", function (d,i) {
+            return i*30+40;
+        })
+        .attr("height",27)
+        .attr("width", function (d,i) {
+            if(selection == i)
+                d = data.ACT_scores;
+            if(d == "NA")
+                d = 0;
+            return ACTScale(d);
+        })
+        .attr("fill","violet")
+        .attr("stroke","darkgrey")
+        .attr("stroke-width","1px");
+
+    chosen = d3.selectAll("#ACT > svg > g > text");
+
+    chosen
+        .attr("x",function (d,i) {
+            if(selection == i)
+                d = data.ACT_scores;
+            if(d== "NA")
+                d = 0;
+            return ACTScale(d)+5;
+        })
+        .attr("y",function (d,i) {
+            return i*30+58;
+        })
+        .text(function (d,i) {
+            if(i == selection)
+                d = data.ACT_scores;
+            if(d==0)
+                return "NA";
+            return d;
+        });
+
+    chosen = d3.selectAll("#Applicants > svg > g > rect");
+    // console.log(chosen);
+    chosen
+        .attr("x", 0)
+        .attr("y", function (d,i) {
+            return i*30+40;
+        })
+        .attr("height",27)
+        .attr("width", function (d,i) {
+            if(selection == i)
+                d = data.Applicants_total;
+            if(d == "NA")
+                d = 0;
+            return TotalApplicantsScale(d);
+        })
+        .attr("fill","purple")
+        .attr("stroke","darkgrey")
+        .attr("stroke-width","1px");
+
+    chosen = d3.selectAll("#Applicants > svg > g > text");
+
+    chosen
+        .attr("x",function (d,i) {
+            if(selection == i)
+                d = data.Applicants_total;
+            if(d== "NA")
+                d = 0;
+            return TotalApplicantsScale(d)+5;
+        })
+        .attr("y",function (d,i) {
+            return i*30+58;
+        })
+        .text(function (d,i) {
+            if(i == selection)
+                d = data.Applicants_total;
+            if(d==0)
+                return "NA";
+            return d;
+        });
+
+    chosen = d3.selectAll("#Enrolled > svg > g > rect");
+    // console.log(chosen);
+    chosen
+        .attr("x", 0)
+        .attr("y", function (d,i) {
+            return i*30+40;
+        })
+        .attr("height",27)
+        .attr("width", function (d,i) {
+            if(selection == i)
+                d = data.year_fulltime_enrollment;
+            if(d == "NA")
+                d = 0;
+            return TotalEnrollmentScale(d);
+        })
+        .attr("fill","maroon")
+        .attr("stroke","darkgrey")
+        .attr("stroke-width","1px");
+
+    chosen = d3.selectAll("#Enrolled > svg > g > text");
+
+    chosen
+        .attr("x",function (d,i) {
+            if(selection == i)
+                d = data.year_fulltime_enrollment;
+            if(d== "NA")
+                d = 0;
+            return TotalEnrollmentScale(d)+5;
+        })
+        .attr("y",function (d,i) {
+            return i*30+58;
+        })
+        .text(function (d,i) {
+            if(i == selection)
+                d = data.year_fulltime_enrollment;
+            if(d==0)
+                return "NA";
+            return d;
+        });
+
+    chosen = d3.selectAll("#Men > svg > g > rect");
+    // console.log(chosen);
+    chosen
+        .attr("x", 0)
+        .attr("y", function (d,i) {
+            return i*30+40;
+        })
+        .attr("height",27)
+        .attr("width", function (d,i) {
+            if(selection == i)
+                d = data.Percent_admitted_men;
+            if(d == "NA")
+                d = 0;
+            return TotalMenPercentScale(d);
+        })
+        .attr("fill","crimson")
+        .attr("stroke","darkgrey")
+        .attr("stroke-width","1px");
+
+    chosen = d3.selectAll("#Men > svg > g > text");
+
+    chosen
+        .attr("x",function (d,i) {
+            if(selection == i)
+                d = data.Percent_admitted_men;
+            if(d == "NA")
+                d = 0;
+            return TotalMenPercentScale(d)+5;
+        })
+        .attr("y",function (d,i) {
+            return i*30+58;
+        })
+        .text(function (d,i) {
+            if(i == selection)
+                d = data.Percent_admitted_men;
+            if(d==0)
+                return "NA";
+            return d;
+        });
+
+
+    chosen = d3.selectAll("#Women > svg > g > rect");
+    // console.log(chosen);
+    chosen
+        .attr("x", 0)
+        .attr("y", function (d,i) {
+            return i*30+40;
+        })
+        .attr("height",27)
+        .attr("width", function (d,i) {
+            if(selection == i)
+                d = data.Percent_admitted_women;
+            if(d == "NA")
+                d = 0;
+            return TotalWomenPercentScale(d);
+        })
+        .attr("fill","green")
+        .attr("stroke","darkgrey")
+        .attr("stroke-width","1px");
+
+    chosen = d3.selectAll("#Women > svg > g > text");
+
+    chosen
+        .attr("x",function (d,i) {
+            if(selection == i)
+                d = data.Percent_admitted_women;
+            if(d== "NA")
+                d = 0;
+            return TotalWomenPercentScale(d)+5;
+        })
+        .attr("y",function (d,i) {
+            return i*30+58;
+        })
+        .text(function (d,i) {
+            if(i == selection)
+                d = data.Percent_admitted_women;
+            if(d==0)
+                return "NA";
+            return d;
+        });
+
+    selection++;
 
 };

@@ -68,6 +68,14 @@ path {
     stroke: #eee;
 }
 
+.container {
+  float: left;
+}
+
+.container1 {
+  float: left;
+}
+
 .middlePoint{
     stroke: #eee;
 }
@@ -86,7 +94,7 @@ path {
     stroke-dasharray: 4;
 }
 
-.barChart {
+.barGroup {
     fill: steelblue;
     stroke: darkgray;
     stroke-width: 1px;
@@ -124,7 +132,7 @@ path {
 .selected{
     stroke: #404040;;
     stroke-width:4;
-    r:25px;
+    r:5px;
 }
 
 

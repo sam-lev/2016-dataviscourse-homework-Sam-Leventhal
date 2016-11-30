@@ -1,5 +1,6 @@
 // Global variable
 var projection;
+var selection = 0;
 
 function MapCompare(histoChart) {
     var self = this;
@@ -104,8 +105,9 @@ MapCompare.prototype.update = function(filteredData) {
 
     if(filteredData == null) {
         var circles = d3.selectAll("circle");
-        if(!circles.empty())
+        if(!circles.empty()) {
             circles.remove();
+        }
         return;
     }
 	// console.log("Call reaches here");
@@ -161,7 +163,11 @@ MapCompare.prototype.update = function(filteredData) {
         .on("mouseover",tip.show)
         .on("mouseout",tip.hide)
         .on("click",function(d,i) {
-            self.histoChart.update(d);
+            d3.select(this).classed("selected",true);
+            if(selection >= 10)
+                selection = 0;
+            self.histoChart.update(d,selection);
+            selection++;
         });
 
     console.log("Reaches here");

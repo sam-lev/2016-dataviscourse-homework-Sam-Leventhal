@@ -284,7 +284,7 @@ LegendCompare.prototype.update = function(){
         .append("text")
         .attr("dx",self.svgWidth-180)
         .attr("dy",15)
-        .text(30)
+        .text(100)
         .attr("font","3x")
         .attr("fill","black");
 
