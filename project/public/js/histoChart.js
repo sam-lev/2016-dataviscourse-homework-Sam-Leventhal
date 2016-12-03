@@ -10,13 +10,14 @@ var applicants = [5723,11714,3033,4915,46813,43048,47552,56515,49820,51163 ];
 var enrolled = [1707,6328,522,924,44504,54328,45854,29232,32172,27516];
 var men = [89,70,73,54,30,44,52,40,41,29];
 var women = [91,70,70,63,37,45,56,44,48,31];
+var selection = 0;
+var chosen;
+var random = [], tuition = [],income = [], sat = [], act = [], applicant = [], enroll = [], menpercent = [], womenpercent = [], school = [];
 
 function HistoChart() {
     var self = this;
     self.init();
 };
-
-
 /**
  * Initializes the svg elements required for this chart
  */
@@ -34,11 +35,11 @@ HistoChart.prototype.init = function(){
     self.svgHeight = 800;
 
     self.ranksSvg = d3.select("#histo-chart").select("#ranks").append("svg")
-        .attr("width",250)
+        .attr("width",300)
         .attr("height",350);
 
     self.tuitionSvg = d3.select("#histo-chart").select("#tuitions").append("svg")
-        .attr("width",250)
+        .attr("width",300)
         .attr("height",350);
 
     self.ranksSvg
@@ -123,7 +124,7 @@ HistoChart.prototype.init = function(){
         });
 
     self.incomeSvg = d3.select("#histo-chart").select("#income").append("svg")
-        .attr("width",250)
+        .attr("width",300)
         .attr("height",350);
 
     self.incomeSvg
@@ -168,7 +169,7 @@ HistoChart.prototype.init = function(){
 
 
     self.SATSvg = d3.select("#histo-chart").select("#SAT").append("svg")
-        .attr("width",250)
+        .attr("width",300)
         .attr("height",350);
 
     self.SATSvg
@@ -218,7 +219,7 @@ HistoChart.prototype.init = function(){
         });
 
     self.ACTSvg = d3.select("#histo-chart").select("#ACT").append("svg")
-        .attr("width",250)
+        .attr("width",300)
         .attr("height",350);
 
     self.ACTSvg
@@ -268,7 +269,7 @@ HistoChart.prototype.init = function(){
         });
 
     self.AppSvg = d3.select("#histo-chart").select("#Applicants").append("svg")
-        .attr("width",250)
+        .attr("width",300)
         .attr("height",350);
 
     self.AppSvg
@@ -317,8 +318,142 @@ HistoChart.prototype.init = function(){
             return d;
         });
 
+    self.schoolSvg = d3.select("#histo-chart").select("#School").append("svg")
+        .attr("width",300)
+        .attr("height",350);
+
+    self.schoolSvg
+        .append("text")
+        .attr("dx",0)
+        .attr("dy",30)
+        .text("Univerity Selection Order")
+        .attr("font","20x")
+        .attr("fill","black")
+        .style("font-weight", "bold");
+
+    var collegeBars = self.schoolSvg.selectAll("g").data(colleges)
+        .enter().append("g");
+
+    collegeBars
+        .append("text")
+        .attr("x", 0)
+        .attr("y",function (d,i) {
+            return i*30+58;
+        })
+        .text(function (d,i) {
+            return (i+1)+ " - " + d;
+        })
+        .attr("font-size","13px")
+        .attr("fill","steelblue")
+        .style("font-weight", "bold")
+        .on("click",function (d,i) {
+            console.log("clicked");
+            d3.selectAll("rect").classed("barGroup",false);
+            d3.select("#School").selectAll("text").classed("independent",false);
+            var panel = i;
+
+            var school = d3.selectAll("#School > svg > g > text");
+            school.filter(function (d,i) {
+                if(panel == i) {
+                    d3.select(this).classed("independent",true);
+                }
+            });
+
+            var women = d3.selectAll("#Women > svg > g > rect");
+            women.filter(function (d,i) {
+                if(panel == i) {
+                    console.log("panel matched",i);
+                    console.log(d3.select(this));
+                    console.log(this);
+                    d3.select(this).classed("barGroup",true);
+                }
+            });
+
+            var men = d3.selectAll("#Men > svg > g > rect");
+            men.filter(function (d,i) {
+                if(panel == i) {
+                    console.log("panel matched",i);
+                    console.log(d3.select(this));
+                    console.log(this);
+                    d3.select(this).classed("barGroup",true);
+                }
+            });
+
+            var rank = d3.selectAll("#ranks > svg > g > rect");
+            rank.filter(function (d,i) {
+                if(panel == i) {
+                    console.log("panel matched",i);
+                    console.log(d3.select(this));
+                    console.log(this);
+                    d3.select(this).classed("barGroup",true);
+                }
+            });
+
+            var rank = d3.selectAll("#tuitions > svg > g > rect");
+            rank.filter(function (d,i) {
+                if(panel == i) {
+                    console.log("panel matched",i);
+                    console.log(d3.select(this));
+                    console.log(this);
+                    d3.select(this).classed("barGroup",true);
+                }
+            });
+
+            var rank = d3.selectAll("#income > svg > g > rect");
+            rank.filter(function (d,i) {
+                if(panel == i) {
+                    console.log("panel matched",i);
+                    console.log(d3.select(this));
+                    console.log(this);
+                    d3.select(this).classed("barGroup",true);
+                }
+            });
+
+            var rank = d3.selectAll("#SAT > svg > g > rect");
+            rank.filter(function (d,i) {
+                if(panel == i) {
+                    console.log("panel matched",i);
+                    console.log(d3.select(this));
+                    console.log(this);
+                    d3.select(this).classed("barGroup",true);
+                }
+            });
+
+            var rank = d3.selectAll("#ACT > svg > g > rect");
+            rank.filter(function (d,i) {
+                if(panel == i) {
+                    console.log("panel matched",i);
+                    console.log(d3.select(this));
+                    console.log(this);
+                    d3.select(this).classed("barGroup",true);
+                }
+            });
+
+            var rank = d3.selectAll("#Applicants > svg > g > rect");
+            rank.filter(function (d,i) {
+                if(panel == i) {
+                    console.log("panel matched",i);
+                    console.log(d3.select(this));
+                    console.log(this);
+                    d3.select(this).classed("barGroup",true);
+                }
+            });
+
+            var rank = d3.selectAll("#Enrolled > svg > g > rect");
+            rank.filter(function (d,i) {
+                if(panel == i) {
+                    console.log("panel matched",i);
+                    console.log(d3.select(this));
+                    console.log(this);
+                    d3.select(this).classed("barGroup",true);
+                }
+            });
+        });
+
+    // console.log(collegeBars);
+
     self.EnrollSvg = d3.select("#histo-chart").select("#Enrolled").append("svg")
-        .attr("width",250)
+        .attr("width",300)
         .attr("height",350);
 
     self.EnrollSvg
@@ -368,7 +503,7 @@ HistoChart.prototype.init = function(){
         });
 
     self.MenSvg = d3.select("#histo-chart").select("#Men").append("svg")
-        .attr("width",250)
+        .attr("width",300)
         .attr("height",350);
 
     self.MenSvg
@@ -418,7 +553,7 @@ HistoChart.prototype.init = function(){
         });
 
     self.WomenSvg = d3.select("#histo-chart").select("#Women").append("svg")
-        .attr("width",250)
+        .attr("width",300)
         .attr("height",350);
 
     self.WomenSvg
@@ -466,6 +601,7 @@ HistoChart.prototype.init = function(){
                 return "NA";
             return d;
         });
+
 };
 
 /**
@@ -477,10 +613,10 @@ HistoChart.prototype.init = function(){
 HistoChart.prototype.update = function(data,selection){
     var self = this;
     console.log(data);
-    console.log(selection);
+    // console.log(selection);
 
-    var chosen = d3.selectAll("#ranks > svg > g > rect");
-    // console.log(chosen);
+    console.log(selection);
+    chosen = d3.selectAll("#ranks > svg > g > rect");
     chosen
         .attr("x", 0)
         .attr("y", function (d,i) {
@@ -488,8 +624,11 @@ HistoChart.prototype.update = function(data,selection){
         })
         .attr("height",27)
         .attr("width", function (d,i) {
-            if(selection == i)
-                d = data.rank;
+            if(selection == i) {
+                 random[selection] = data.rank;
+            }
+            if(i < random.length)
+                d = random[i];
             if(d == "NA")
                 d = 0;
             return rankScale(d);
@@ -499,11 +638,13 @@ HistoChart.prototype.update = function(data,selection){
         .attr("stroke-width","1px");
 
     chosen = d3.selectAll("#ranks > svg > g > text");
-
     chosen
         .attr("x",function (d,i) {
-            if(selection == i)
-                d = data.rank;
+            if(selection == i) {
+                random[selection] = data.rank;
+            }
+            if(i < random.length)
+                d = random[i];
             if(d== "NA")
                 d = 0;
             return rankScale(d)+5;
@@ -512,8 +653,11 @@ HistoChart.prototype.update = function(data,selection){
             return i*30+58;
         })
         .text(function (d,i) {
-            if(i == selection)
-                d = data.rank;
+            if(selection == i) {
+                random[selection] = data.rank;
+            }
+            if(i < random.length)
+                d = random[i];
             if(d==0)
                 return "NA";
             return d;
@@ -528,8 +672,11 @@ HistoChart.prototype.update = function(data,selection){
         })
         .attr("height",27)
         .attr("width", function (d,i) {
-            if(selection == i)
-                d = data.Tuition;
+            if(selection == i) {
+                tuition[selection] = data.Tuition;
+            }
+            if(i < tuition.length)
+                d = tuition[i];
             if(d == "NA")
                 d = 0;
             return tuitionScale(d);
@@ -542,9 +689,12 @@ HistoChart.prototype.update = function(data,selection){
 
     chosen
         .attr("x",function (d,i) {
-            if(selection == i)
-                d = data.Tuition;
-            if(d== "NA")
+            if(selection == i) {
+                tuition[selection] = data.Tuition;
+            }
+            if(i < tuition.length)
+                d = tuition[i];
+            if(d == "NA")
                 d = 0;
             return tuitionScale(d)+5;
         })
@@ -552,8 +702,11 @@ HistoChart.prototype.update = function(data,selection){
             return i*30+58;
         })
         .text(function (d,i) {
-            if(i == selection)
-                d = data.Tuition;
+            if(selection == i) {
+                tuition[selection] = data.Tuition;
+            }
+            if(i < tuition.length)
+                d = tuition[i];
             if(d==0)
                 return "NA";
             return d;
@@ -568,8 +721,11 @@ HistoChart.prototype.update = function(data,selection){
         })
         .attr("height",27)
         .attr("width", function (d,i) {
-            if(selection == i)
-                d = data.income;
+            if(selection == i) {
+                income[selection] = data.income;
+            }
+            if(i < income.length)
+                d = income[i];
             if(d == "NA")
                 d = 0;
             return incomeScale(d);
@@ -582,9 +738,12 @@ HistoChart.prototype.update = function(data,selection){
 
     chosen
         .attr("x",function (d,i) {
-            if(selection == i)
-                d = data.income;
-            if(d== "NA")
+            if(selection == i) {
+                income[selection] = data.income;
+            }
+            if(i < income.length)
+                d = income[i];
+            if(d == "NA")
                 d = 0;
             return incomeScale(d)+5;
         })
@@ -592,8 +751,11 @@ HistoChart.prototype.update = function(data,selection){
             return i*30+58;
         })
         .text(function (d,i) {
-            if(i == selection)
-                d = data.income;
+            if(selection == i) {
+                income[selection] = data.income;
+            }
+            if(i < income.length)
+                d = income[i];
             if(d==0)
                 return "NA";
             return d;
@@ -608,8 +770,11 @@ HistoChart.prototype.update = function(data,selection){
         })
         .attr("height",27)
         .attr("width", function (d,i) {
-            if(selection == i)
-                d = data.SAT_scores;
+            if(selection == i) {
+                sat[selection] = data.SAT_scores;
+            }
+            if(i < sat.length)
+                d = sat[i];
             if(d == "NA")
                 d = 0;
             return SATScale(d);
@@ -622,9 +787,12 @@ HistoChart.prototype.update = function(data,selection){
 
     chosen
         .attr("x",function (d,i) {
-            if(selection == i)
-                d = data.SAT_scores;
-            if(d== "NA")
+            if(selection == i) {
+                sat[selection] = data.SAT_scores;
+            }
+            if(i < sat.length)
+                d = sat[i];
+            if(d == "NA")
                 d = 0;
             return SATScale(d)+5;
         })
@@ -632,8 +800,11 @@ HistoChart.prototype.update = function(data,selection){
             return i*30+58;
         })
         .text(function (d,i) {
-            if(i == selection)
-                d = data.SAT_scores;
+            if(selection == i) {
+                sat[selection] = data.SAT_scores;
+            }
+            if(i < sat.length)
+                d = sat[i];
             if(d==0)
                 return "NA";
             return d;
@@ -648,8 +819,11 @@ HistoChart.prototype.update = function(data,selection){
         })
         .attr("height",27)
         .attr("width", function (d,i) {
-            if(selection == i)
-                d = data.ACT_scores;
+            if(selection == i) {
+                act[selection] = data.ACT_scores;
+            }
+            if(i < act.length)
+                d = act[i];
             if(d == "NA")
                 d = 0;
             return ACTScale(d);
@@ -662,9 +836,12 @@ HistoChart.prototype.update = function(data,selection){
 
     chosen
         .attr("x",function (d,i) {
-            if(selection == i)
-                d = data.ACT_scores;
-            if(d== "NA")
+            if(selection == i) {
+                act[selection] = data.ACT_scores;
+            }
+            if(i < act.length)
+                d = act[i];
+            if(d == "NA")
                 d = 0;
             return ACTScale(d)+5;
         })
@@ -672,8 +849,11 @@ HistoChart.prototype.update = function(data,selection){
             return i*30+58;
         })
         .text(function (d,i) {
-            if(i == selection)
-                d = data.ACT_scores;
+            if(selection == i) {
+                act[selection] = data.ACT_scores;
+            }
+            if(i < act.length)
+                d = act[i];
             if(d==0)
                 return "NA";
             return d;
@@ -688,8 +868,11 @@ HistoChart.prototype.update = function(data,selection){
         })
         .attr("height",27)
         .attr("width", function (d,i) {
-            if(selection == i)
-                d = data.Applicants_total;
+            if(selection == i) {
+                applicant[selection] = data.Applicants_total;
+            }
+            if(i < applicant.length)
+                d = applicant[i];
             if(d == "NA")
                 d = 0;
             return TotalApplicantsScale(d);
@@ -702,9 +885,12 @@ HistoChart.prototype.update = function(data,selection){
 
     chosen
         .attr("x",function (d,i) {
-            if(selection == i)
-                d = data.Applicants_total;
-            if(d== "NA")
+            if(selection == i) {
+                applicant[selection] = data.Applicants_total;
+            }
+            if(i < applicant.length)
+                d = applicant[i];
+            if(d == "NA")
                 d = 0;
             return TotalApplicantsScale(d)+5;
         })
@@ -712,8 +898,30 @@ HistoChart.prototype.update = function(data,selection){
             return i*30+58;
         })
         .text(function (d,i) {
-            if(i == selection)
-                d = data.Applicants_total;
+            if(selection == i) {
+                applicant[selection] = data.Applicants_total;
+            }
+            if(i < applicant.length)
+                d = applicant[i];
+            if(d==0)
+                return "NA";
+            return d;
+        });
+
+    chosen = d3.selectAll("#School > svg > g > text");
+
+    chosen
+        .attr("x",0)
+        .attr("y",function (d,i) {
+            return i*30+58;
+        })
+        .text(function (d,i) {
+            if(selection == i) {
+                school[selection] = data['institution.name'];
+                console.log(school)
+            }
+            if(i < school.length)
+                d = school[i];
             if(d==0)
                 return "NA";
             return d;
@@ -728,8 +936,11 @@ HistoChart.prototype.update = function(data,selection){
         })
         .attr("height",27)
         .attr("width", function (d,i) {
-            if(selection == i)
-                d = data.year_fulltime_enrollment;
+            if(selection == i) {
+                enroll[selection] = data.year_fulltime_enrollment;
+            }
+            if(i < enroll.length)
+                d = enroll[i];
             if(d == "NA")
                 d = 0;
             return TotalEnrollmentScale(d);
@@ -742,9 +953,12 @@ HistoChart.prototype.update = function(data,selection){
 
     chosen
         .attr("x",function (d,i) {
-            if(selection == i)
-                d = data.year_fulltime_enrollment;
-            if(d== "NA")
+            if(selection == i) {
+                enroll[selection] = data.year_fulltime_enrollment;
+            }
+            if(i < enroll.length)
+                d = enroll[i];
+            if(d == "NA")
                 d = 0;
             return TotalEnrollmentScale(d)+5;
         })
@@ -752,8 +966,11 @@ HistoChart.prototype.update = function(data,selection){
             return i*30+58;
         })
         .text(function (d,i) {
-            if(i == selection)
-                d = data.year_fulltime_enrollment;
+            if(selection == i) {
+                enroll[selection] = data.year_fulltime_enrollment;
+            }
+            if(i < enroll.length)
+                d = enroll[i];
             if(d==0)
                 return "NA";
             return d;
@@ -768,8 +985,11 @@ HistoChart.prototype.update = function(data,selection){
         })
         .attr("height",27)
         .attr("width", function (d,i) {
-            if(selection == i)
-                d = data.Percent_admitted_men;
+            if(selection == i) {
+                menpercent[selection] = data.Percent_admitted_men;
+            }
+            if(i < menpercent.length)
+                d = menpercent[i];
             if(d == "NA")
                 d = 0;
             return TotalMenPercentScale(d);
@@ -782,8 +1002,11 @@ HistoChart.prototype.update = function(data,selection){
 
     chosen
         .attr("x",function (d,i) {
-            if(selection == i)
-                d = data.Percent_admitted_men;
+            if(selection == i) {
+                menpercent[selection] = data.Percent_admitted_men;
+            }
+            if(i < menpercent.length)
+                d = menpercent[i];
             if(d == "NA")
                 d = 0;
             return TotalMenPercentScale(d)+5;
@@ -792,13 +1015,15 @@ HistoChart.prototype.update = function(data,selection){
             return i*30+58;
         })
         .text(function (d,i) {
-            if(i == selection)
-                d = data.Percent_admitted_men;
+            if(selection == i) {
+                menpercent[selection] = data.Percent_admitted_men;
+            }
+            if(i < menpercent.length)
+                d = menpercent[i];
             if(d==0)
                 return "NA";
             return d;
         });
-
 
     chosen = d3.selectAll("#Women > svg > g > rect");
     // console.log(chosen);
@@ -809,8 +1034,11 @@ HistoChart.prototype.update = function(data,selection){
         })
         .attr("height",27)
         .attr("width", function (d,i) {
-            if(selection == i)
-                d = data.Percent_admitted_women;
+            if(selection == i) {
+                womenpercent[selection] = data.Percent_admitted_women;
+            }
+            if(i < womenpercent.length)
+                d = womenpercent[i];
             if(d == "NA")
                 d = 0;
             return TotalWomenPercentScale(d);
@@ -823,9 +1051,12 @@ HistoChart.prototype.update = function(data,selection){
 
     chosen
         .attr("x",function (d,i) {
-            if(selection == i)
-                d = data.Percent_admitted_women;
-            if(d== "NA")
+            if(selection == i) {
+                womenpercent[selection] = data.Percent_admitted_women;
+            }
+            if(i < womenpercent.length)
+                d = womenpercent[i];
+            if(d == "NA")
                 d = 0;
             return TotalWomenPercentScale(d)+5;
         })
@@ -833,13 +1064,16 @@ HistoChart.prototype.update = function(data,selection){
             return i*30+58;
         })
         .text(function (d,i) {
-            if(i == selection)
-                d = data.Percent_admitted_women;
+            if(selection == i) {
+                womenpercent[selection] = data.Percent_admitted_women;
+            }
+            if(i < womenpercent.length)
+                d = womenpercent[i];
             if(d==0)
                 return "NA";
             return d;
         });
 
-    selection++;
+    // selection++;
 
 };

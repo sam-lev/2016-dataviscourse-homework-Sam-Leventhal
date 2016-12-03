@@ -1,12 +1,13 @@
 // Global variable
 var projection;
 var selection = 0;
+var centered;
 
-function MapCompare(histoChart) {
+function MapCompare(histoChart,rangeScaleChart) {
     var self = this;
 
     self.histoChart = histoChart;
-    // self.rangeScaleChart= rangeScaleChart;
+    self.rangeScaleChart= rangeScaleChart;
     // self.collegeData= collegeData;
     self.init();
 };
@@ -22,40 +23,61 @@ MapCompare.prototype.init = function(){
      *
      */
     self.margin = {top: 10, right: 20, bottom: 30, left: 50};
-    var divyearChart = d3.select("#map-Compare").classed("fullView", true);
+    // var divyearChart = d3.select("#map-Compare");
 
     //Gets access to the div element created for this chart from HTML
-    self.svgBounds = divyearChart.node().getBoundingClientRect();
+    // self.svgBounds = divyearChart.node().getBoundingClientRect();
     self.svgWidth = 800;//self.svgBounds.width - self.margin.left - self.margin.right;
     self.svgHeight = 600;
 
-    //creates svg element within the div
-    self.svg = divyearChart.append("svg")
-        .attr("width",self.svgWidth)
-        .attr("height",self.svgHeight);
+    var legend = d3.select("#legend").append("svg")
+        .attr("width", 700)
+        .attr("height", 50);
 
-    //Had to add projection to work in v4.0
-    projection = d3.geoAlbersUsa()
-        .translate([self.svgWidth/2, self.svgHeight/2])
-        .scale([1000]);
+    legend.append("circle")
+        .attr("cx",10)
+        .attr("cy",20)
+        .attr("r",5)
+        .style("fill","red");
 
-    // Define default path generator
-    var path = d3.geoPath()
-        .projection(projection);
+    legend.append("text")
+        .attr("x",20)
+        .attr("y",25)
+        .attr("fill","black")
+        .text("{rank less than or = 10}")
+        .attr("font-size","15px")
+        .attr("font","sans-serif")
+        .style("font-weight", "bold");
 
-    var svg;
-    //Load in GeoJSON data
-    d3.json("data/us-states.json", function(json) {
+    legend.append("circle")
+        .attr("cx",190)
+        .attr("cy",20)
+        .attr("r",5)
+        .style("fill","black");
 
-        //Bind data and create one path per GeoJSON feature
-        self.svg.selectAll("path")
-            .data(json.features)
-            .enter()
-            .append("path")
-            // here we use the familiar d attribute again to define the path
-            .attr("d", path);
-    });
+    legend.append("text")
+        .attr("x",200)
+        .attr("y",25)
+        .attr("fill","black")
+        .text("{rank greater than 10 and less than or = 20}")
+        .attr("font-size","15px")
+        .attr("font","sans-serif")
+        .style("font-weight", "bold");
 
+    legend.append("circle")
+        .attr("cx",500)
+        .attr("cy",20)
+        .attr("r",5)
+        .style("fill","blue");
+
+    legend.append("text")
+        .attr("x",510)
+        .attr("y",25)
+        .attr("fill","black")
+        .text("{rank greater than 20}")
+        .attr("font-size","15px")
+        .attr("font","sans-serif")
+        .style("font-weight", "bold");
 };
 
 
@@ -104,7 +126,7 @@ MapCompare.prototype.update = function(filteredData) {
 	 .domain(domain).range(range);
 
     if(filteredData == null) {
-        var circles = d3.selectAll("circle");
+        var circles = d3.select("#map-Compare").selectAll("circle");
         if(!circles.empty()) {
             circles.remove();
         }
@@ -112,7 +134,8 @@ MapCompare.prototype.update = function(filteredData) {
     }
 	// console.log("Call reaches here");
     console.log(filteredData);
-    d3.selectAll("circle").remove();
+    // d3.selectAll("circle").remove();
+    d3.select("#map-Compare").selectAll("circle").remove();
     /*var filteredData = self.collegeData.filter(function (d) {
      if(d.rank <= 30) return d;
      });
@@ -138,7 +161,7 @@ MapCompare.prototype.update = function(filteredData) {
             return renderer;
         });
 
-    self.svg.selectAll("circle")
+    d3.select("svg").selectAll("circle")
         .data(filteredData)
         .enter()
         .append("circle")
@@ -150,7 +173,7 @@ MapCompare.prototype.update = function(filteredData) {
             // console.log(d);
             return projection([d.longitude, d.latitude])[1];
         })
-        .attr("r", 4)
+        .attr("r", 3)
         .attr("fill", function (d) {
             if(d.rank <= 10) {
                 return "red"
@@ -163,11 +186,19 @@ MapCompare.prototype.update = function(filteredData) {
         .on("mouseover",tip.show)
         .on("mouseout",tip.hide)
         .on("click",function(d,i) {
-            d3.select(this).classed("selected",true);
-            if(selection >= 10)
-                selection = 0;
-            self.histoChart.update(d,selection);
-            selection++;
+            // console.log(d3.select(this).attr("class"));
+            if(d3.select(this).attr("class") == "selected") {
+                d3.select(this).classed("selected",false);
+                // console.log(d['institution.name']);
+                self.rangeScaleChart.update(d);
+            } else {
+                d3.select(this).classed("selected",true);
+                if(selection >= 10)
+                    selection = 0;
+                self.histoChart.update(d,selection);
+                self.rangeScaleChart.update(d);
+                selection++;
+            }
         });
 
     console.log("Reaches here");

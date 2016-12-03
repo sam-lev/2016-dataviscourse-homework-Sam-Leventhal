@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Visualization - Project</title>
-    <link rel="stylesheet" href="public/css/style.css"/>
+    <title>Visualization - Project </title>
 	<!--<link rel="stylesheet" href= "public/css/bootstrap.min.css" rel="stylesheet" media="screen">-->
-    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="//d3js.org/d3.v3.min.js"></script>
+    <script src="//d3js.org/topojson.v1.min.js"></script>   
 	<script src="http://code.jquery.com/jquery.js"></script>
     <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>-->
     <script type="text/javascript" src="bower_components/d3/d3.js"></script>
@@ -14,28 +14,210 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.9.0/d3-legend.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+	<style>
+
+.background {
+  fill: none;
+  pointer-events: all;
+}
+
+#states {
+  fill: #aaa;
+}
+
+#states .active {
+  fill: orange;
+}
+
+#state-borders {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.5px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+h1 {
+    font-family: "Arvo";
+    font-size:35px;
+    color: #464646;
+    margin: 0px;
+    padding: 0px;
+    margin-left: 20px;
+}
+
+.content {
+    display: inline-block;
+    width: 70%;
+}
+
+.sideBar {
+    display: inline-block;
+    width: 30%;
+    float:right;
+}
+
+.container {
+  float: left;
+}
+
+.container1 {
+  float: right;
+}
+
+.barGroup {
+    fill: steelblue;
+    stroke: darkgray;
+    stroke-width: 1px;
+}
+
+.republican{
+    fill: #de2d26;
+    color: #de2d26;
+    text-anchor:end;
+	font-family: "sans-serif";
+}
+	
+.heading{
+    fill: #de2d26;
+    color: #de2d26;
+    text-anchor:end;
+	font-family: "sans-serif";
+    font-size:35px;
+}
+.democrat{
+    fill: #3182bd;
+    text-anchor:start;
+    color: #3182bd;
+}
+.independent{
+    fill: #45AD6A;
+    color: #45AD6A;
+    text-anchor:start;
+	font-family: "sans-serif";
+}
+
+.name{
+    fill: #45AD6A;
+    color: #45AD6A;
+    text-anchor:start;
+	font-family: "verdana";
+    font-size:15px;
+}
+.highlighted{
+    stroke: #404040;;
+    stroke-width:2;
+}
+
+.brush .selection {
+    fill-opacity: .5;
+}
+
+.selected{
+    stroke: #404040;;
+    stroke-width:4;
+    r:5px;
+}
+
+
+h2{
+    -webkit-margin-before: 5px;
+    -webkit-margin-after:  5px;
+}
+.d3-tip {
+    /*line-height: 5;*/
+    padding-left: 10px;
+    padding-right: 10px;
+    min-width: 400px;
+    border-style: groove;
+    /*padding: 12px;*/
+    background: #FFFFFF;
+    color: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    pointer-events: none;
+}
+.tooltip-title{
+    font-size:18px;
+    font-family: "Arial Black";
+
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+    /*box-sizing: border-box;*/
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    /*line-height: 1;*/
+    color: rgba(0, 0, 0, 0.8);
+    position: relative;
+    pointer-events: none;
+}
+
+/* Northward tooltips */
+.d3-tip.n:after {
+    content: "\25BC";
+    /*margin: -1px 0 0 0;*/
+    top: 100%;
+    left: 0;
+    text-align: center;
+}
+
+/* Eastward tooltips */
+.d3-tip.e:after {
+    content: "\26A0";
+    /*margin: -4px 0 0 0;*/
+    top: -800px;
+    left: -8px;
+}
+
+/* Southward tooltips */
+.d3-tip.s:after {
+    content: "\25B2";
+    /*margin: 4px 0 1px 0;*/
+    top: -8px;
+    left: 1481px;
+    text-align: center;
+}
+
+/* Westward tooltips */
+.d3-tip.w:after {
+    content: "\25B6";
+    /*margin: -4px 0 0 -1px;*/
+    top: 50%;
+    left: 100%;
+}
+
+h3{
+    text-anchor:middle;
+    font-size: 32px;
+}
+
+
+</style>
 </head>
 
-<body>
+<body bgcolor="#E6E6FA">
 
-<h1>Intuitive comparision of University Statistics</h1>
-<p class="info">Name: Sam Leventhal & Unnikrishnan Rajagopalan; E-Mail: samlev@cs.utah.edu & unniar@cs.utah.edu ; UID: u0491567 & u1010114</p>
-<div id="map-Compare" class="view">
+<h1 class = "heading">Intuitive Comparision of University Statistics</h1>
+<p class="name">Name: Sam Leventhal & Unnikrishnan Rajagopalan; E-Mail: samlev@cs.utah.edu & unniar@cs.utah.edu ; UID: u0491567 & u1010114</p>
+<div id="map-Compare">
 </div>
 
-
+ <div id = "legend"></div>
 
 <div id = "legend-Compare" class = "view">
 </div>
 
 <div id = "histo-chart" class = "view">
-    <div class="container1" id="school"></div>
     <div class="container" id="ranks"></div>
 	<div id="tuitions" class = "container"></div>
 	<div id="income" class = "container"></div>
 	<div id="SAT" class = "container"></div>
 	<div id="ACT" class = "container"></div>
 	<div id="Applicants" class = "container"></div>
+	<div id="School" class = "container"></div>
 	<div id="Enrolled" class = "container"></div>
 	<div id="Men" class = "container"></div>
 	<div id="Women" class = "container"></div>
@@ -44,12 +226,93 @@
 <div id = "range-scale" class = "view">
 </div>
 
+<linearGradient id="range-scale" class = "view>
+   <stop offset="0" stop-color="#fff"/>
+   <stop offset="1" stop-color="#00f0NaN"/>
+</linearGradient>
 
 <script type="application/javascript" src="public/js/rangeScaleChart.js"></script>
 <script type="application/javascript" src="public/js/mapCompare.js"></script>
 <script type="application/javascript" src="public/js/legendCompare.js"></script>
 <script type="application/javascript" src="public/js/histoChart.js"></script>
-<script type="application/javascript" src="public/js/main.js">
+<script type="application/javascript" src="public/js/main.js"></script>
+<script>
+
+var width = 960,
+    height = 500,
+    centered;
+
+var projection = d3.geo.albersUsa()
+    .scale(1070)
+    .translate([width / 2, height / 2]);
+
+var path = d3.geo.path()
+    .projection(projection);
+
+var svg = d3.select("#map-Compare").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+	
+var legend = d3.select("#map-Compare").select("#legend").append("svg")
+        .attr("width", 100)
+        .attr("height", 150);
+
+svg.append("rect")
+    .attr("class", "background")
+    .attr("width", width)
+    .attr("height", height)
+    .on("click", clicked);
+
+var g = svg.append("g");
+
+d3.json("data/us.json", function(error, us) {
+  if (error) throw error;
+
+  g.append("g")
+      .attr("id", "states")
+    .selectAll("path")
+      .data(topojson.feature(us, us.objects.states).features)
+    .enter().append("path")
+      .attr("d", path)
+      .on("click", clicked);
+
+  g.append("path")
+      .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+      .attr("id", "state-borders")
+      .attr("d", path);
+	  
+});
+
+function clicked(d) {
+  var x, y, k;
+  console.log("clicked");
+  console.log(d);
+
+  if (d && centered !== d) {
+    var centroid = path.centroid(d);
+    x = centroid[0];
+    y = centroid[1];
+    k = 4;
+    centered = d;
+  } else {
+    x = width / 2;
+    y = height / 2;
+    k = 1;
+    centered = null;
+  }
+
+  g.selectAll("path")
+      .classed("active", centered && function(d) { return d === centered; });
+	  
+  g.transition()
+      .duration(750)
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+      .style("stroke-width", 1.5 / k + "px");
+
+	  d3.selectAll("circle").transition()
+          .duration(750)
+          .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+}
 
 </script>
 </body>

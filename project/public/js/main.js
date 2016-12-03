@@ -13,20 +13,22 @@
 
         //static visualisation  comparing attributes of schools selected as
         //histogram
-        var histoChart = new HistoChart();
-
-        var rangeScaleChart = new RangeScaleChart();
-
-        var mapCompare = new MapCompare(histoChart);
-
         //load the data corresponding to all the election years
         //pass this data and instances of all the charts that update on year selection to yearChart's constructor
+
+        var histoChart = new HistoChart();
+
+
         d3.csv("data/collegelocation.csv", function (error, collegeData) {
             //pass the instances of all the charts that update on selection change in YearChart
             // var mapCompare = new MapCompare(histoChart, rangeScaleChart, collegeData);
             // mapCompare.update();
 
-	        var legendCompare = new LegendCompare(histoChart, rangeScaleChart, mapCompare, collegeData);
+            var rangeScaleChart = new RangeScaleChart(collegeData);
+
+            var mapCompare = new MapCompare(histoChart,rangeScaleChart);
+
+            var legendCompare = new LegendCompare(rangeScaleChart, mapCompare, collegeData);
             legendCompare.update();
         });
     }

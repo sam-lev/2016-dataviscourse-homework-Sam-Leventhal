@@ -27,10 +27,8 @@ var menSelected = false;
 var lowerWomenPercent, higherWomenPercent;
 var womenSelected = false;
 
-function LegendCompare(histoChart, rangeScaleChart, mapCompare, collegeData) {
+function LegendCompare(rangeScaleChart, mapCompare, collegeData) {
     var self = this;
-
-    self.histoChart = histoChart;
     self.rangeScaleChart= rangeScaleChart;
     self.mapCompare = mapCompare;
     self.collegeData= collegeData;
@@ -243,6 +241,7 @@ LegendCompare.prototype.update = function(){
             self.mapCompare.update(filtered);
             rankSelected = false;
             self.redraw();
+            self.rangeScaleChart.update(0);
             return;
         }
         rankSelected = true;
@@ -278,7 +277,9 @@ LegendCompare.prototype.update = function(){
         .attr("dy",15)
         .text(0)
         .attr("font","3x")
-        .attr("fill","black");
+        .attr("fill","brown")
+        .attr("font","sans-serif")
+        .style("font-weight", "bold");
 
     self.svg
         .append("text")
@@ -286,7 +287,9 @@ LegendCompare.prototype.update = function(){
         .attr("dy",15)
         .text(100)
         .attr("font","3x")
-        .attr("fill","black");
+        .attr("fill","brown")
+        .attr("font","sans-serif")
+        .style("font-weight", "bold");
 
     var tuitionScale = d3.scaleLinear()
         .range([80,49630])
@@ -298,7 +301,9 @@ LegendCompare.prototype.update = function(){
         .attr("dy",45)
         .text(80)
         .attr("font","3x")
-        .attr("fill","black");
+        .attr("fill","brown")
+        .attr("font","sans-serif")
+        .style("font-weight", "bold");
 
     self.svg
         .append("text")
@@ -306,7 +311,9 @@ LegendCompare.prototype.update = function(){
         .attr("dy",45)
         .text(49630)
         .attr("font","3x")
-        .attr("fill","black");
+        .attr("fill","brown")
+        .attr("font","sans-serif")
+        .style("font-weight", "bold");
 
     var brush2 = d3.brushX().extent([[300,32],[self.svgWidth-190,45]]).on("end", function() {
         var brushSelection = d3.event.selection;
@@ -317,6 +324,7 @@ LegendCompare.prototype.update = function(){
             self.mapCompare.update(filtered);
             tuitionSelected = false;
             self.redraw();
+            self.rangeScaleChart.update(0);
             return;
         }
         tuitionSelected = true;
@@ -357,7 +365,9 @@ LegendCompare.prototype.update = function(){
         .attr("dy",75)
         .text(0)
         .attr("font","3x")
-        .attr("fill","black");
+        .attr("fill","brown")
+        .attr("font","sans-serif")
+        .style("font-weight", "bold");
 
     self.svg
         .append("text")
@@ -365,7 +375,9 @@ LegendCompare.prototype.update = function(){
         .attr("dy",75)
         .text(72676)
         .attr("font","3x")
-        .attr("fill","black");
+        .attr("fill","brown")
+        .attr("font","sans-serif")
+        .style("font-weight", "bold");
 
     var brush3 = d3.brushX().extent([[300,62],[self.svgWidth-190,75]]).on("end", function() {
         var brushSelection = d3.event.selection;
@@ -376,6 +388,7 @@ LegendCompare.prototype.update = function(){
             self.mapCompare.update(filtered);
             incomeSelected = false;
             self.redraw();
+            self.rangeScaleChart.update(0);
             return;
         }
         incomeSelected = true;
@@ -416,7 +429,9 @@ LegendCompare.prototype.update = function(){
         .attr("dy",105)
         .text(0)
         .attr("font","3x")
-        .attr("fill","black");
+        .attr("fill","brown")
+        .attr("font","sans-serif")
+        .style("font-weight", "bold");
 
     self.svg
         .append("text")
@@ -424,7 +439,9 @@ LegendCompare.prototype.update = function(){
         .attr("dy",105)
         .text(8795)
         .attr("font","3x")
-        .attr("fill","black");
+        .attr("fill","brown")
+        .attr("font","sans-serif")
+        .style("font-weight", "bold");
 
 
     var brush4 = d3.brushX().extent([[300,92],[self.svgWidth-190,105]]).on("end", function() {
@@ -436,6 +453,7 @@ LegendCompare.prototype.update = function(){
             self.mapCompare.update(filtered);
             SATSelected = false;
             self.redraw();
+            self.rangeScaleChart.update(0);
             return;
         }
         SATSelected = true;
@@ -476,7 +494,9 @@ LegendCompare.prototype.update = function(){
         .attr("dy",135)
         .text(0)
         .attr("font","3x")
-        .attr("fill","black");
+        .attr("fill","brown")
+        .attr("font","sans-serif")
+        .style("font-weight", "bold");
 
     self.svg
         .append("text")
@@ -484,7 +504,9 @@ LegendCompare.prototype.update = function(){
         .attr("dy",135)
         .text(100)
         .attr("font","3x")
-        .attr("fill","black");
+        .attr("fill","brown")
+        .attr("font","sans-serif")
+        .style("font-weight", "bold");
 
     var brush5 = d3.brushX().extent([[300,122],[self.svgWidth-190,135]]).on("end", function() {
         var brushSelection = d3.event.selection;
@@ -495,6 +517,7 @@ LegendCompare.prototype.update = function(){
             self.mapCompare.update(filtered);
             ACTSelected = false;
             self.redraw();
+            self.rangeScaleChart.update(0);
             return;
         }
         ACTSelected = true;
@@ -535,7 +558,9 @@ LegendCompare.prototype.update = function(){
         .attr("dy",165)
         .text(0)
         .attr("font","3x")
-        .attr("fill","black");
+        .attr("fill","brown")
+        .attr("font","sans-serif")
+        .style("font-weight", "bold");
 
     self.svg
         .append("text")
@@ -543,7 +568,9 @@ LegendCompare.prototype.update = function(){
         .attr("dy",165)
         .text(72676)
         .attr("font","3x")
-        .attr("fill","black");
+        .attr("fill","brown")
+        .attr("font","sans-serif")
+        .style("font-weight", "bold");
 
     var brush6 = d3.brushX().extent([[300,152],[self.svgWidth-190,165]]).on("end", function() {
         var brushSelection = d3.event.selection;
@@ -554,6 +581,7 @@ LegendCompare.prototype.update = function(){
             self.mapCompare.update(filtered);
             applicantSelected = false;
             self.redraw();
+            self.rangeScaleChart.update(0);
             return;
         }
         applicantSelected = true
@@ -594,7 +622,9 @@ LegendCompare.prototype.update = function(){
         .attr("dy",195)
         .text(12)
         .attr("font","3x")
-        .attr("fill","black");
+        .attr("fill","brown")
+        .attr("font","sans-serif")
+        .style("font-weight", "bold");
 
     self.svg
         .append("text")
@@ -602,7 +632,9 @@ LegendCompare.prototype.update = function(){
         .attr("dy",195)
         .text(61874)
         .attr("font","3x")
-        .attr("fill","black");
+        .attr("fill","brown")
+        .attr("font","sans-serif")
+        .style("font-weight", "bold");
 
     var brush7 = d3.brushX().extent([[300,182],[self.svgWidth-190,195]]).on("end", function() {
         var brushSelection = d3.event.selection;
@@ -613,6 +645,7 @@ LegendCompare.prototype.update = function(){
             self.mapCompare.update(filtered);
             enrollmentSelected = false;
             self.redraw();
+            self.rangeScaleChart.update(0);
             return;
         }
         enrollmentSelected = true;
@@ -653,7 +686,9 @@ LegendCompare.prototype.update = function(){
         .attr("dy",225)
         .text(0)
         .attr("font","3x")
-        .attr("fill","black");
+        .attr("fill","brown")
+        .attr("font","sans-serif")
+        .style("font-weight", "bold");
 
     self.svg
         .append("text")
@@ -661,7 +696,9 @@ LegendCompare.prototype.update = function(){
         .attr("dy",225)
         .text(100)
         .attr("font","3x")
-        .attr("fill","black");
+        .attr("fill","brown")
+        .attr("font","sans-serif")
+        .style("font-weight", "bold");
 
     var brush8 = d3.brushX().extent([[300,212],[self.svgWidth-190,225]]).on("end", function() {
         var brushSelection = d3.event.selection;
@@ -672,6 +709,7 @@ LegendCompare.prototype.update = function(){
             self.mapCompare.update(filtered);
             menSelected = false;
             self.redraw();
+            self.rangeScaleChart.update(0);
             return;
         }
         menSelected = true;
@@ -712,7 +750,9 @@ LegendCompare.prototype.update = function(){
         .attr("dy",255)
         .text(0)
         .attr("font","3x")
-        .attr("fill","black");
+        .attr("fill","brown")
+        .attr("font","sans-serif")
+        .style("font-weight", "bold");
 
     self.svg
         .append("text")
@@ -720,7 +760,9 @@ LegendCompare.prototype.update = function(){
         .attr("dy",255)
         .text(100)
         .attr("font","3x")
-        .attr("fill","black");
+        .attr("fill","brown")
+        .attr("font","sans-serif")
+        .style("font-weight", "bold");
 
     var brush9 = d3.brushX().extent([[300,242],[self.svgWidth-190,255]]).on("end", function() {
         var brushSelection = d3.event.selection;
@@ -731,6 +773,7 @@ LegendCompare.prototype.update = function(){
             self.mapCompare.update(filtered);
             womenSelected = false;
             self.redraw();
+            self.rangeScaleChart.update(0);
             return;
         }
         womenSelected = true;
